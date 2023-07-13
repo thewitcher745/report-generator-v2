@@ -1,7 +1,13 @@
+from telegram import InputMediaPhoto
 from telegram.ext import ConversationHandler
+from binance.client import Client
 
+import image_generator
 import keyboards
 import utilities
+import os
+
+client = Client("", "")
 
 
 async def welcome(update, context):
@@ -60,16 +66,39 @@ class NormalReportConv:
 
 
 class AutomaticSignalConv:
-    SIGNAL, SELECT_TARGET, CONFIRM = range(3)
+    EXCHANGE, IMAGE, SIGNAL, TARGET, QR, REF, CONFIRM = range(7)
 
     @staticmethod
     async def start(update, context):
         await update.callback_query.answer()
+        await utilities.send_message(context, update, "❓ Please select an exchange:", keyboard=keyboards.exchange,
+                                     is_callback_query=True)
+
+        return AutomaticSignalConv.EXCHANGE
+
+    @staticmethod
+    async def exchange(update, context):
+        await update.callback_query.answer()
+        context.user_data["exchange"] = update.callback_query.data
+        if context.user_data["exchange"] == "bybit":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_bybit, is_callback_query=True)
+        elif context.user_data["exchange"] == "binance":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_binance, is_callback_query=True)
+
+        return AutomaticSignalConv.IMAGE
+
+    @staticmethod
+    async def image(update, context):
+        await update.callback_query.answer()
+        context.user_data["image_id"] = update.callback_query.data
         await utilities.send_message(context, update, "❓ Please forward or copy a signal:", is_callback_query=True)
 
         return AutomaticSignalConv.SIGNAL
 
     @staticmethod
+    # This handler takes the forwarded/copied signal and processes it using RegEx using functions provided in utilities
     async def signal(update, context):
         signal_text = update.message.text.lower()
 
@@ -82,33 +111,39 @@ class AutomaticSignalConv:
 
         if not symbol:
             await utilities.send_message(context, update,
-                                         "❌ Couldn't find symbol. Check if signal was copied/forwarded correctly.")
-            return ConversationHandler.END
+                                         "❌ Couldn't find symbol. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
 
         if not signal_type:
             await utilities.send_message(context, update,
-                                         "❌ Couldn't find signal type. Check if signal was copied/forwarded correctly.")
-            return ConversationHandler.END
+                                         "❌ Couldn't find signal type. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
 
         if not leverage:
             await utilities.send_message(context, update,
-                                         "❌ Couldn't find leverage. Check if signal was copied/forwarded correctly.")
-            return ConversationHandler.END
+                                         "❌ Couldn't find leverage. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
 
         if not entry:
             await utilities.send_message(context, update,
-                                         "❌ Couldn't find entry target. Check if signal was copied/forwarded correctly.")
-            return ConversationHandler.END
+                                         "❌ Couldn't find entry target. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
 
         if not targets:
             await utilities.send_message(context, update,
-                                         "❌ Couldn't find targets. Check if signal was copied/forwarded correctly.")
-            return ConversationHandler.END
+                                         "❌ Couldn't find targets. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
 
         if not stop:
             await utilities.send_message(context, update,
-                                         "❌ Couldn't find stop targets. Check if signal was copied/forwarded correctly.")
-            return ConversationHandler.END
+                                         "❌ Couldn't find stop target. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
 
         context.user_data["symbol"] = symbol
         context.user_data["signal_type"] = signal_type
@@ -125,11 +160,32 @@ class AutomaticSignalConv:
 ☑️ Targets: {targets}
 🚪 Stop: {stop}
         
-If this information is correct, press "☑️ Confirm" below to start generating the image. 
-Otherwise, use /cancel to end the process.
+If the information is incorrect, use /cancel to end the process.
         '''
+        await utilities.send_message(context, update, confirmation_message)
 
-        await utilities.send_message(context, update, confirmation_message, keyboard=keyboards.confirm)
+        keyboard = keyboards.qr_bybit
+        if context.user_data["exchange"] == "binance":
+            keyboard = keyboards.qr_binance
+
+        qr_message = "❓ Select a QR code from below: "
+        await utilities.send_message(context, update, qr_message, keyboard=keyboard)
+
+        return AutomaticSignalConv.QR
+
+    @staticmethod
+    async def qr(update, context):
+        await update.callback_query.answer()
+        context.user_data["qr"] = update.callback_query.data
+        await utilities.send_message(context, update, "❓ Please type a referral code:", is_callback_query=True)
+
+        return AutomaticSignalConv.REF
+
+    @staticmethod
+    async def ref(update, context):
+        context.user_data["ref"] = update.message.text
+        await utilities.send_message(context, update, "🎉 Got it. Press ☑️ Confirm to create the image(s)...",
+                                     keyboard=keyboards.confirm)
 
         return AutomaticSignalConv.CONFIRM
 
@@ -158,6 +214,43 @@ Otherwise, use /cancel to end the process.
     @staticmethod
     async def confirm_signal(update, context):
         await update.callback_query.answer()
-        await utilities.send_message(context, update, "🎉 Done! Generating image...", is_callback_query=True)
+        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
 
+        # Clear the /images subdirectory
+        for filename in os.listdir("./images"):
+            os.remove("./images/" + filename)
+
+        image_id = context.user_data["image_id"]
+        symbol = context.user_data["symbol"]
+        signal_type = context.user_data["signal_type"].capitalize()
+        leverage = context.user_data["leverage"]
+
+        stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
+        symbol_precision = int(client.get_symbol_info(stripped_symbol)["baseAssetPrecision"])
+
+        # Override
+        # entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
+        entry = utilities.separate_number(context.user_data["entry"])
+
+        # targets = [utilities.separate_number("{:.{}f}".format(float(target), symbol_precision)) for target in
+        #            context.user_data["targets"]]
+
+        targets = [utilities.separate_number(target) for target in context.user_data["targets"]]
+        qr = context.user_data["qr"]
+        ref = context.user_data["ref"]
+
+        media_group = []
+        for target_id, target in enumerate(targets):
+            deficit = abs(float(target) - float(entry))
+            roi = deficit / float(entry) * 100 * float(leverage) if signal_type == "long" else deficit / float(
+                target) * 100 * float(leverage)
+            roi = f"+{str(round(roi, 2))}%"
+            image_generator.generate_image(image_id, symbol, signal_type, f"{leverage}x", roi, entry, target, qr, ref,
+                                           f"{image_id}_{target_id}")
+
+            media_group.append(InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", 'rb')))
+
+        await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
+        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
+                                     is_callback_query=True)
         return ConversationHandler.END

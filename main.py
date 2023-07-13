@@ -27,14 +27,26 @@ manual_report_handler = ConversationHandler(
 automatic_report_handler = ConversationHandler(
     entry_points=[CallbackQueryHandler(handlers.AutomaticSignalConv.start, "automatic")],
     states={
+        handlers.AutomaticSignalConv.EXCHANGE: [
+            CallbackQueryHandler(handlers.AutomaticSignalConv.exchange)],
+        handlers.AutomaticSignalConv.IMAGE: [
+            CallbackQueryHandler(handlers.AutomaticSignalConv.image)
+        ],
         handlers.AutomaticSignalConv.SIGNAL: [
-            MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.signal)],
+            MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.signal)
+        ],
+        handlers.AutomaticSignalConv.QR: [
+            CallbackQueryHandler(handlers.AutomaticSignalConv.qr)
+        ],
+        handlers.AutomaticSignalConv.REF: [
+            MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.ref)
+        ],
         # handlers.AutomaticSignalConv.SELECT_TARGET: [
         #     MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.select_target),
         #     CommandHandler('cancel', handlers.cancel)
         # ],
         handlers.AutomaticSignalConv.CONFIRM: [
-            CallbackQueryHandler(handlers.AutomaticSignalConv.confirm_signal),
+            CallbackQueryHandler(handlers.AutomaticSignalConv.confirm_signal, "confirm"),
             CommandHandler('cancel', handlers.cancel)
         ]
     },

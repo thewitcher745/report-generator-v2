@@ -7,6 +7,15 @@ async def send_message(context, update, message_text, keyboard=None, is_callback
                                    reply_markup=keyboard)
 
 
+def separate_number(number):
+    number_str = str(number)
+    integer_part, decimal_part = number_str.split(".")
+    integer_part = integer_part[::-1]
+    integer_parts = [integer_part[i:i + 3][::-1] for i in range(0, len(integer_part), 3)]
+    integer_parts.reverse()
+    return ",".join(integer_parts) + "." + decimal_part
+
+
 def convert_string_to_list(signal_text, pattern):
     result_list = []
 
@@ -15,11 +24,10 @@ def convert_string_to_list(signal_text, pattern):
         stripped_result_list_numbered_list = re.findall(r"\d\)\s*\d+.?\d*", match.group())
         for result_numbered_item in stripped_result_list_numbered_list:
             stripped_result_match = re.search(r"\)\s*\d+.?\d*", result_numbered_item)
-            result_list.append(float(stripped_result_match.group().replace(")", "").replace(" ", "")))
+            result_list.append(stripped_result_match.group().replace(")", "").replace(" ", ""))
         return result_list
     else:
         return False
-
 
 
 class RegexPatterns:
@@ -29,7 +37,7 @@ class RegexPatterns:
         match = re.search(pattern, signal_text)
 
         if match:
-            return match.group().replace("#", "").upper()
+            return match.group().replace("#", "").replace("/", "").upper() + " Perpetual"
         else:
             return False
 
@@ -41,7 +49,7 @@ class RegexPatterns:
         if match:
             match = re.search(r"\(\w+\)", match.group())
             if match:
-                return match.group().replace("(", "").replace(")", "").upper()
+                return match.group().replace("(", "").replace(")", "")
             else:
                 return False
         else:
@@ -54,7 +62,7 @@ class RegexPatterns:
         match = re.search(pattern, signal_text)
         if match:
             match = re.search(r"\(\d*\.?", match.group())
-            return int(match.group().replace(".", "").replace("(", ""))
+            return match.group().replace(".", "").replace("(", "")
         else:
             return False
 
