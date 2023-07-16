@@ -31,6 +31,7 @@ image_bybit = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("ByBit 1", callback_data="bybit_1"),
         InlineKeyboardButton("ByBit 2", callback_data="bybit_2"),
+        InlineKeyboardButton("ByBit 2", callback_data="bybit_3"),
     ],
 ])
 
@@ -41,7 +42,6 @@ image_binance = InlineKeyboardMarkup([
     ],
     [
         InlineKeyboardButton("Binance 3", callback_data="binance_3"),
-        InlineKeyboardButton("Binance 4", callback_data="binance_4")
     ]
 ])
 

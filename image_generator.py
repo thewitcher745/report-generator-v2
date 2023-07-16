@@ -28,7 +28,6 @@ def generate_image(image_id, symbol, signal_type, leverage, roi, entry, target, 
     draw_qr(qr_code, styling, draw, img)
 
     img.save(f"./images/{filename}.png")
-    img.show()
 
 
 def draw_vertical_lines(styling, draw_object, image):
@@ -75,29 +74,44 @@ def draw_leverage(leverage, styling, draw_object, image):
 
 
 def draw_bybit_signal_type(signal_type, leverage, symbol, styling, draw_object, img):
+    def draw_transparent_rrect(xy, size, rect_radius, color, alpha, background_image):
+        img_f = Image.new("RGB", size, color=color)
+        img_b = background_image
+
+        img_alpha = Image.new("L", img_f.size, 0)
+        draw_alpha = ImageDraw.Draw(img_alpha)
+        draw_alpha.rounded_rectangle((0, 0, size[0], size[1]), fill=alpha,
+                                     radius=rect_radius)
+
+        im_rgba = img_f.copy()
+        im_rgba.putalpha(img_alpha)
+
+        img_b.paste(img_f, xy, mask=im_rgba)
+
     text = f"{signal_type.capitalize()} {leverage}"
-    margin = 12
-    spacing = 50
 
     signal_type_styling = styling["signal_type"]
     symbol_styling = styling["symbol"]
-
+    margin_x = signal_type_styling.margin_x
+    margin_y = signal_type_styling.margin_y
+    spacing = signal_type_styling.spacing
+    margin_y_mult = signal_type_styling.margin_y_mult
+    radius = signal_type_styling.rect_radius
     font = ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size)
     symbol_font = ImageFont.truetype(symbol_styling.font, symbol_styling.font_size)
 
     # The horizontal position of the box is the sum of the length of the symbol, plus its distance from the left edge,
     # plus a certain distance between the two
     box_x = get_text_width(symbol, symbol_font) + symbol_styling.position.x * img.size[0] + spacing
-    box_xy = (box_x, signal_type_styling.position.y * img.size[1])
-    text_xy = (box_x + margin, box_xy[1] + margin)
+    box_xy = (int(box_x), int(signal_type_styling.position.y * img.size[1]))
+    text_xy = (box_x + margin_x, box_xy[1] + margin_y_mult * margin_y)
 
-    box_width = get_text_width(text, font) + 2 * margin
-    box_height = get_text_height(text, font) + 2.5 * margin
+    box_width = get_text_width(text, font) + 2 * margin_x
+    box_height = get_text_height(text, font) + 2 * margin_y
 
     box_color = (64, 38, 39) if signal_type.lower() == "short" else (34, 51, 45)
     text_color = (220, 66, 90) if signal_type.lower() == "short" else (33, 182, 114)
-    draw_object.rounded_rectangle((box_xy[0], box_xy[1], box_xy[0] + box_width, box_xy[1] + box_height), fill=box_color,
-                                  radius=7)
+    draw_transparent_rrect(box_xy, (box_width, box_height), radius, box_color, 190, img)
     draw_object.text(text_xy, text,
                      font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size),
                      fill=text_color)
@@ -173,3 +187,5 @@ def draw_right_aligned_text(text, position, styling, font, draw_object):
     position = (position[0] - text_width, position[1])
 
     draw_object.text(position, text, font=font, fill=styling.color)
+
+

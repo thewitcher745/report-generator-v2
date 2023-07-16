@@ -71,8 +71,81 @@ class AutomaticSignalConv:
     @staticmethod
     async def start(update, context):
         await update.callback_query.answer()
+        context.user_data["full_auto_signal"] = False
+
         await utilities.send_message(context, update, "❓ Please select an exchange:", keyboard=keyboards.exchange,
                                      is_callback_query=True)
+
+        return AutomaticSignalConv.EXCHANGE
+
+    @staticmethod
+    # This handler takes the forwarded/copied signal and processes it using RegEx using functions provided in utilities
+    async def start_full_auto(update, context):
+        signal_text = update.message.text.lower()
+        context.user_data["full_auto_signal"] = True
+
+        symbol = utilities.RegexPatterns.symbol(signal_text)
+        signal_type = utilities.RegexPatterns.signal_type(signal_text)
+        leverage = utilities.RegexPatterns.leverage(signal_text)
+        entry = utilities.RegexPatterns.entry(signal_text)[0]
+        targets = utilities.RegexPatterns.targets(signal_text)
+        stop = utilities.RegexPatterns.stop(signal_text)[0]
+
+        if not symbol:
+            await utilities.send_message(context, update,
+                                         "❌ Couldn't find symbol. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
+
+        if not signal_type:
+            await utilities.send_message(context, update,
+                                         "❌ Couldn't find signal type. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
+
+        if not leverage:
+            await utilities.send_message(context, update,
+                                         "❌ Couldn't find leverage. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
+
+        if not entry:
+            await utilities.send_message(context, update,
+                                         "❌ Couldn't find entry target. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
+
+        if not targets:
+            await utilities.send_message(context, update,
+                                         "❌ Couldn't find targets. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
+
+        if not stop:
+            await utilities.send_message(context, update,
+                                         "❌ Couldn't find stop target. Check if signal was copied/forwarded " +
+                                         "correctly and send it again or use /cancel to cancel the operation.")
+            return AutomaticSignalConv.SIGNAL
+
+        context.user_data["symbol"] = symbol
+        context.user_data["signal_type"] = signal_type
+        context.user_data["leverage"] = leverage
+        context.user_data["entry"] = entry
+        context.user_data["targets"] = targets
+        context.user_data["stop"] = stop
+
+        confirmation_message = f'''
+    💰 Symbol: {symbol}
+    💰 Type: {signal_type}
+    ⬆️ Leverage: {leverage}
+    ⏎ Entry: {entry}
+    ☑️ Targets: {targets}
+    🚪 Stop: {stop}
+
+    If the information is incorrect, use /cancel to end the process.
+            '''
+        await utilities.send_message(context, update, confirmation_message)
+        await utilities.send_message(context, update, "❓ Please select an exchange:", keyboard=keyboards.exchange)
 
         return AutomaticSignalConv.EXCHANGE
 
@@ -80,10 +153,14 @@ class AutomaticSignalConv:
     async def exchange(update, context):
         await update.callback_query.answer()
         context.user_data["exchange"] = update.callback_query.data
-        if context.user_data["exchange"] == "bybit":
+
+        exchange = context.user_data["exchange"]
+        media_group = [InputMediaPhoto(open(f"./images/{exchange}_images.png", 'rb'))]
+        await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
+        if exchange == "bybit":
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_bybit, is_callback_query=True)
-        elif context.user_data["exchange"] == "binance":
+        elif exchange == "binance":
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_binance, is_callback_query=True)
 
@@ -93,9 +170,18 @@ class AutomaticSignalConv:
     async def image(update, context):
         await update.callback_query.answer()
         context.user_data["image_id"] = update.callback_query.data
-        await utilities.send_message(context, update, "❓ Please forward or copy a signal:", is_callback_query=True)
 
-        return AutomaticSignalConv.SIGNAL
+        if context.user_data["full_auto_signal"]:
+            keyboard = keyboards.qr_bybit
+            if context.user_data["exchange"] == "binance":
+                keyboard = keyboards.qr_binance
+            qr_message = "❓ Select a QR code from below: "
+            await utilities.send_message(context, update, qr_message, keyboard=keyboard, is_callback_query=True)
+
+            return AutomaticSignalConv.QR
+        else:
+            await utilities.send_message(context, update, "❓ Please forward or copy a signal:", is_callback_query=True)
+            return AutomaticSignalConv.SIGNAL
 
     @staticmethod
     # This handler takes the forwarded/copied signal and processes it using RegEx using functions provided in utilities
@@ -223,19 +309,27 @@ If the information is incorrect, use /cancel to end the process.
         image_id = context.user_data["image_id"]
         symbol = context.user_data["symbol"]
         signal_type = context.user_data["signal_type"].capitalize()
-        leverage = context.user_data["leverage"]
+        leverage = context.user_data["leverage"].upper()
+        if context.user_data["exchange"] == "binance":
+            context.user_data["leverage"].lower()
 
+        is_formatting = True
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
-        symbol_precision = int(client.get_symbol_info(stripped_symbol)["baseAssetPrecision"])
+        try:
+            symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
 
-        # Override
-        # entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
-        entry = utilities.separate_number(context.user_data["entry"])
+            if symbol_precision == 0:
+                error_message = "❌ The selected exchange doesn't support the given symbol. Please try another exchange."
+                await utilities.send_message(context, update, error_message, is_callback_query=True)
+                return ConversationHandler.END
 
-        # targets = [utilities.separate_number("{:.{}f}".format(float(target), symbol_precision)) for target in
-        #            context.user_data["targets"]]
+            entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
+            targets = [utilities.separate_number("{:.{}f}".format(float(target), symbol_precision)) for target in
+                       context.user_data["targets"]]
+        except KeyError:
+            entry = context.user_data["entry"]
+            targets = context.user_data["targets"]
 
-        targets = [utilities.separate_number(target) for target in context.user_data["targets"]]
         qr = context.user_data["qr"]
         ref = context.user_data["ref"]
 

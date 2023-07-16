@@ -11,7 +11,8 @@ application = Application.builder().token(bot_token).build()
 welcome_handler = CommandHandler('start', handlers.welcome)
 
 manual_report_handler = ConversationHandler(
-    entry_points=[CallbackQueryHandler(handlers.NormalReportConv.start, "manual")],
+    entry_points=[CallbackQueryHandler(handlers.NormalReportConv.start, "manual"),
+                  CommandHandler("manual", handlers.NormalReportConv.start)],
     states={
         handlers.NormalReportConv.SYMBOL: [
             MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.NormalReportConv.symbol)],
@@ -25,7 +26,8 @@ manual_report_handler = ConversationHandler(
 )
 
 automatic_report_handler = ConversationHandler(
-    entry_points=[CallbackQueryHandler(handlers.AutomaticSignalConv.start, "automatic")],
+    entry_points=[CallbackQueryHandler(handlers.AutomaticSignalConv.start, "automatic"),
+                  MessageHandler(filters.FORWARDED & ~filters.COMMAND, handlers.AutomaticSignalConv.start_full_auto)],
     states={
         handlers.AutomaticSignalConv.EXCHANGE: [
             CallbackQueryHandler(handlers.AutomaticSignalConv.exchange)],

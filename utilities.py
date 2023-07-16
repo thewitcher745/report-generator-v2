@@ -1,4 +1,5 @@
 import re
+import csv
 
 
 async def send_message(context, update, message_text, keyboard=None, is_callback_query=False):
@@ -28,6 +29,21 @@ def convert_string_to_list(signal_text, pattern):
         return result_list
     else:
         return False
+
+
+def get_pair_precision(pair, exchange):
+    pair_precision_dict = {}
+    with open('./precision.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            pair_name = row[0]
+            if pair_name != "PAIR":
+                pair_precision_dict[pair_name] = {
+                    "binance": row[1],
+                    "bybit": row[2]
+                }
+
+    return pair_precision_dict[pair][exchange]
 
 
 class RegexPatterns:
