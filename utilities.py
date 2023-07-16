@@ -10,6 +10,7 @@ async def send_message(context, update, message_text, keyboard=None, is_callback
 
 def separate_number(number):
     number_str = str(number)
+    print(number_str)
     integer_part, decimal_part = number_str.split(".")
     integer_part = integer_part[::-1]
     integer_parts = [integer_part[i:i + 3][::-1] for i in range(0, len(integer_part), 3)]
@@ -43,7 +44,7 @@ def get_pair_precision(pair, exchange):
                     "bybit": row[2]
                 }
 
-    return pair_precision_dict[pair][exchange]
+    return int(pair_precision_dict[pair][exchange])
 
 
 class RegexPatterns:

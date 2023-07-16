@@ -66,7 +66,7 @@ class NormalReportConv:
 
 
 class AutomaticSignalConv:
-    EXCHANGE, IMAGE, SIGNAL, TARGET, QR, REF, CONFIRM = range(7)
+    EXCHANGE, IMAGE, SIGNAL, TARGET, QR, REF = range(7)
 
     @staticmethod
     async def start(update, context):
@@ -155,7 +155,7 @@ class AutomaticSignalConv:
         context.user_data["exchange"] = update.callback_query.data
 
         exchange = context.user_data["exchange"]
-        media_group = [InputMediaPhoto(open(f"./images/{exchange}_images.png", 'rb'))]
+        media_group = [InputMediaPhoto(open(f"./background_images/{exchange}_images.png", 'rb'))]
         await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
         if exchange == "bybit":
             await utilities.send_message(context, update, "❓ Please select an image:",
@@ -270,37 +270,7 @@ If the information is incorrect, use /cancel to end the process.
     @staticmethod
     async def ref(update, context):
         context.user_data["ref"] = update.message.text
-        await utilities.send_message(context, update, "🎉 Got it. Press ☑️ Confirm to create the image(s)...",
-                                     keyboard=keyboards.confirm)
-
-        return AutomaticSignalConv.CONFIRM
-
-    # @staticmethod
-    # async def select_target(update, context):
-    #     target_hit = update.message.text
-    #
-    #     if not target_hit.isnumeric():
-    #         message = "❌ The entered number is not valid. Try another input."
-    #         await utilities.send_message(context, update, message)
-    #         return AutomaticSignalConv.SELECT_TARGET
-    #
-    #     elif int(target_hit) > len(context.user_data["targets"]):
-    #         message = "❌ The entered number doesn't correspond to a valid target. Try another input."
-    #         await utilities.send_message(context, update, message)
-    #         return AutomaticSignalConv.SELECT_TARGET
-    #
-    #     context.user_data["selected_target"] = context.user_data['targets'][int(target_hit) - 1]
-    #     message = f"🆗 Target #{target_hit} was selected. It has a value of {context.user_data['selected_target']}\n"
-    #     message += 'Press "☑️ Confirm" below to start generating the image.'
-    #
-    #     await utilities.send_message(context, update, message, keyboard=keyboards.confirm)
-    #
-    #     return AutomaticSignalConv.CONFIRM
-
-    @staticmethod
-    async def confirm_signal(update, context):
-        await update.callback_query.answer()
-        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
+        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
 
         # Clear the /images subdirectory
         for filename in os.listdir("./images"):
@@ -313,14 +283,12 @@ If the information is incorrect, use /cancel to end the process.
         if context.user_data["exchange"] == "binance":
             context.user_data["leverage"].lower()
 
-        is_formatting = True
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
-
             if symbol_precision == 0:
                 error_message = "❌ The selected exchange doesn't support the given symbol. Please try another exchange."
-                await utilities.send_message(context, update, error_message, is_callback_query=True)
+                await utilities.send_message(context, update, error_message)
                 return ConversationHandler.END
 
             entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
@@ -345,6 +313,28 @@ If the information is incorrect, use /cancel to end the process.
             media_group.append(InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", 'rb')))
 
         await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
-        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
-                                     is_callback_query=True)
+        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
         return ConversationHandler.END
+
+    # @staticmethod
+    # async def select_target(update, context):
+    #     target_hit = update.message.text
+    #
+    #     if not target_hit.isnumeric():
+    #         message = "❌ The entered number is not valid. Try another input."
+    #         await utilities.send_message(context, update, message)
+    #         return AutomaticSignalConv.SELECT_TARGET
+    #
+    #     elif int(target_hit) > len(context.user_data["targets"]):
+    #         message = "❌ The entered number doesn't correspond to a valid target. Try another input."
+    #         await utilities.send_message(context, update, message)
+    #         return AutomaticSignalConv.SELECT_TARGET
+    #
+    #     context.user_data["selected_target"] = context.user_data['targets'][int(target_hit) - 1]
+    #     message = f"🆗 Target #{target_hit} was selected. It has a value of {context.user_data['selected_target']}\n"
+    #     message += 'Press "☑️ Confirm" below to start generating the image.'
+    #
+    #     await utilities.send_message(context, update, message, keyboard=keyboards.confirm)
+    #
+    #     return AutomaticSignalConv.CONFIRM
+
