@@ -66,7 +66,7 @@ class NormalReportConv:
 
 
 class AutomaticSignalConv:
-    EXCHANGE, IMAGE, SIGNAL, TARGET, QR, REF = range(7)
+    EXCHANGE, SAVED_SETUP, IMAGE, SIGNAL, TARGET, QR, REF = range(7)
 
     @staticmethod
     async def start(update, context):
@@ -155,6 +155,19 @@ class AutomaticSignalConv:
         context.user_data["exchange"] = update.callback_query.data
 
         exchange = context.user_data["exchange"]
+        symbol = context.user_data["symbol"]
+        stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
+        try:
+            symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
+            if symbol_precision == 0:
+                error_message = "❌ The selected exchange doesn't support the given symbol. Please try another exchange."
+                await utilities.send_message(context, update, error_message, keyboard=keyboards.exchange,
+                                             is_callback_query=True)
+                return AutomaticSignalConv.EXCHANGE
+        except KeyError:
+            message = "❌ The selected exchange hasn't been listed for that exchange. Will use the default signal precision."
+            await utilities.send_message(context, update, message, is_callback_query=True)
+
         media_group = [InputMediaPhoto(open(f"./background_images/{exchange}_images.png", 'rb'))]
         await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
         if exchange == "bybit":
@@ -172,16 +185,43 @@ class AutomaticSignalConv:
         context.user_data["image_id"] = update.callback_query.data
 
         if context.user_data["full_auto_signal"]:
-            keyboard = keyboards.qr_bybit
+            keyboard = keyboards.bybit_setups
             if context.user_data["exchange"] == "binance":
-                keyboard = keyboards.qr_binance
-            qr_message = "❓ Select a QR code from below: "
-            await utilities.send_message(context, update, qr_message, keyboard=keyboard, is_callback_query=True)
+                keyboard = keyboards.binance_setups
+            setup_message = "❓ Select a saved setup below, or press custom to enter your own referral info: "
+            await utilities.send_message(context, update, setup_message, keyboard=keyboard, is_callback_query=True)
 
-            return AutomaticSignalConv.QR
+            return AutomaticSignalConv.SAVED_SETUP
         else:
             await utilities.send_message(context, update, "❓ Please forward or copy a signal:", is_callback_query=True)
             return AutomaticSignalConv.SIGNAL
+
+    @staticmethod
+    async def saved_setup(update, context):
+        exchange = context.user_data["exchange"]
+        await update.callback_query.answer()
+        if update.callback_query.data == "custom":
+            qr_message = "❓ Please select a QR code from below: "
+            keyboard = keyboards.qr_bybit
+            if exchange == "binance":
+                keyboard = keyboards.qr_binance
+            await utilities.send_message(context, update, qr_message, keyboard=keyboard, is_callback_query=True)
+            return AutomaticSignalConv.QR
+        else:
+            setup = update.callback_query.data
+            context.user_data["qr"] = utilities.saved_setups[exchange][setup]["qr"]
+            context.user_data["ref"] = utilities.saved_setups[exchange][setup]["referral"]
+
+            await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
+
+            media_group = await AutomaticSignalConv.generate_images(context, update)
+
+            for media in media_group:
+                await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
+            await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
+                                         is_callback_query=True)
+
+            return ConversationHandler.END
 
     @staticmethod
     # This handler takes the forwarded/copied signal and processes it using RegEx using functions provided in utilities
@@ -272,6 +312,17 @@ If the information is incorrect, use /cancel to end the process.
         context.user_data["ref"] = update.message.text
         await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
 
+        media_group = await AutomaticSignalConv.generate_images(context, update)
+
+        for media in media_group:
+            await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
+
+        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+
+        return ConversationHandler.END
+
+    @staticmethod
+    async def generate_images(context, update):
         # Clear the /images subdirectory
         for filename in os.listdir("./images"):
             os.remove("./images/" + filename)
@@ -284,6 +335,8 @@ If the information is incorrect, use /cancel to end the process.
             context.user_data["leverage"].lower()
 
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
+        if context.user_data["exchange"] == "bybit":
+            symbol = stripped_symbol
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
             if symbol_precision == 0:
@@ -292,7 +345,7 @@ If the information is incorrect, use /cancel to end the process.
                 return ConversationHandler.END
 
             entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
-            targets = [utilities.separate_number("{:.{}f}".format(float(target), symbol_precision)) for target in
+            targets = ["{:.{}f}".format(float(target), symbol_precision) for target in
                        context.user_data["targets"]]
         except KeyError:
             entry = context.user_data["entry"]
@@ -307,14 +360,12 @@ If the information is incorrect, use /cancel to end the process.
             roi = deficit / float(entry) * 100 * float(leverage) if signal_type == "long" else deficit / float(
                 target) * 100 * float(leverage)
             roi = f"+{str(round(roi, 2))}%"
-            image_generator.generate_image(image_id, symbol, signal_type, f"{leverage}x", roi, entry, target, qr, ref,
+            image_generator.generate_image(image_id, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry), utilities.separate_number(target), qr, ref,
                                            f"{image_id}_{target_id}")
 
             media_group.append(InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", 'rb')))
 
-        await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
-        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
-        return ConversationHandler.END
+        return media_group
 
     # @staticmethod
     # async def select_target(update, context):
@@ -337,4 +388,3 @@ If the information is incorrect, use /cancel to end the process.
     #     await utilities.send_message(context, update, message, keyboard=keyboards.confirm)
     #
     #     return AutomaticSignalConv.CONFIRM
-

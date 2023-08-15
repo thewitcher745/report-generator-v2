@@ -1,4 +1,5 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+import utilities
 
 welcome = InlineKeyboardMarkup([
     [
@@ -65,5 +66,38 @@ qr_binance = InlineKeyboardMarkup([
         InlineKeyboardButton("QR 4", callback_data="binance_4"),
         InlineKeyboardButton("QR 5", callback_data="binance_5"),
         InlineKeyboardButton("QR 5", callback_data="binance_6"),
+    ],
+])
+
+binance_setups = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("Cryptolovers", callback_data="Cryptolovers"),
+        InlineKeyboardButton("CAN 1", callback_data="CAN 1")],
+    [
+        InlineKeyboardButton("CAN 2", callback_data="CAN 2"),
+        InlineKeyboardButton("Mentally", callback_data="Mentally"),
+    ],
+    [
+        InlineKeyboardButton("Bbland", callback_data="Bbland"),
+        InlineKeyboardButton("Paid", callback_data="Paid"),
+    ],
+    [
+        InlineKeyboardButton("Turk", callback_data="Turk"),
+    ],
+    [
+        InlineKeyboardButton("Custom...", callback_data="custom"),
+    ],
+])
+
+bybit_setups = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("ByBit QR1", callback_data="ByBit QR1"),
+        InlineKeyboardButton("ByBit QR2", callback_data="ByBit QR2")],
+    [
+        InlineKeyboardButton("ByBit QR3", callback_data="ByBit QR3"),
+        InlineKeyboardButton("ByBit QR4", callback_data="ByBit QR4"),
+    ],
+    [
+        InlineKeyboardButton("Custom...", callback_data="custom"),
     ],
 ])

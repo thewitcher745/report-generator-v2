@@ -37,6 +37,9 @@ automatic_report_handler = ConversationHandler(
         handlers.AutomaticSignalConv.SIGNAL: [
             MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.signal)
         ],
+        handlers.AutomaticSignalConv.SAVED_SETUP: [
+            CallbackQueryHandler(handlers.AutomaticSignalConv.saved_setup)
+        ],
         handlers.AutomaticSignalConv.QR: [
             CallbackQueryHandler(handlers.AutomaticSignalConv.qr)
         ],
@@ -47,10 +50,6 @@ automatic_report_handler = ConversationHandler(
         #     MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.select_target),
         #     CommandHandler('cancel', handlers.cancel)
         # ],
-        handlers.AutomaticSignalConv.CONFIRM: [
-            CallbackQueryHandler(handlers.AutomaticSignalConv.confirm_signal, "confirm"),
-            CommandHandler('cancel', handlers.cancel)
-        ]
     },
     fallbacks=[CommandHandler('cancel', handlers.cancel)]
 )
