@@ -356,9 +356,9 @@ If the information is incorrect, use /cancel to end the process.
 
         media_group = []
         used_money = 10
-        qty = used_money * float(context.user_data["leverage"])
+        qty = used_money * float(context.user_data["leverage"]) / float(context.user_data["entry"])
         for target_id, target in enumerate(targets):
-            if signal_type == "long":
+            if signal_type.lower() == "long":
                 loss = float(context.user_data["entry"]) * qty
                 gain = float(target) * qty
             else:
@@ -366,7 +366,7 @@ If the information is incorrect, use /cancel to end the process.
                 gain = float(context.user_data["entry"]) * qty
 
             net_profit = gain - loss
-            roi = net_profit / used_money
+            roi = net_profit / used_money * 100
             roi = f"+{str(round(roi, 2))}%"
             image_generator.generate_image(image_id, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry), utilities.separate_number(target), qr, ref,
                                            f"{image_id}_{target_id}")
