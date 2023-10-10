@@ -21,6 +21,7 @@ def convert_string_to_list(signal_text, pattern):
     result_list = []
 
     match = re.search(pattern, signal_text)
+    print(match)
     if match:
         stripped_result_list_numbered_list = re.findall(r"\d\)\s*\d+.?\d*", match.group())
         for result_numbered_item in stripped_result_list_numbered_list:
@@ -47,55 +48,106 @@ def get_pair_precision(pair, exchange):
 
 
 class RegexPatterns:
-    @staticmethod
-    def symbol(signal_text):
-        pattern = r"#\w+\/\w+"
-        match = re.search(pattern, signal_text)
+    class Regular:
+        @staticmethod
+        def symbol(signal_text):
+            pattern = r"#\w+\/\w+"
+            match = re.search(pattern, signal_text)
 
-        if match:
-            return match.group().replace("#", "").replace("/", "").upper() + " Perpetual"
-        else:
-            return False
-
-    @staticmethod
-    def signal_type(signal_text):
-        pattern = r"signal\stype:\s*\w*\s*\(\w+\)"
-
-        match = re.search(pattern, signal_text)
-        if match:
-            match = re.search(r"\(\w+\)", match.group())
             if match:
-                return match.group().replace("(", "").replace(")", "")
+                return match.group().replace("#", "").replace("/", "").upper() + " Perpetual"
             else:
                 return False
-        else:
-            return False
 
-    @staticmethod
-    def leverage(signal_text):
-        pattern = r"leverage:\s*\w*\s*\(\d*\.?\d*"
+        @staticmethod
+        def signal_type(signal_text):
+            pattern = r"signal\stype:\s*\w*\s*\(\w+\)"
 
-        match = re.search(pattern, signal_text)
-        if match:
-            match = re.search(r"\(\d*\.?", match.group())
-            return match.group().replace(".", "").replace("(", "")
-        else:
-            return False
+            match = re.search(pattern, signal_text)
+            if match:
+                match = re.search(r"\(\w+\)", match.group())
+                if match:
+                    return match.group().replace("(", "").replace(")", "")
+                else:
+                    return False
+            else:
+                return False
 
-    @staticmethod
-    def entry(signal_text):
-        pattern = r"entry\stargets:\n(\d*\s*\)\s\d+.*\d*\n)*\n*take"
-        return convert_string_to_list(signal_text, pattern)
+        @staticmethod
+        def leverage(signal_text):
+            pattern = r"leverage:\s*\w*\s*\(\d*\.?\d*"
 
-    @staticmethod
-    def targets(signal_text):
-        pattern = r"take-profit\stargets:\n(\d*\s*\)\s*\d+.*\d*\n)*\n*stop"
-        return convert_string_to_list(signal_text, pattern)
+            match = re.search(pattern, signal_text)
+            if match:
+                match = re.search(r"\(\d*\.?", match.group())
+                return match.group().replace(".", "").replace("(", "")
+            else:
+                return False
 
-    @staticmethod
-    def stop(signal_text):
-        pattern = r"stop\stargets:\n(\d*\s*\)\s*\d+.*\d*\n)*\n*"
-        return convert_string_to_list(signal_text, pattern)
+        @staticmethod
+        def entry(signal_text):
+            pattern = r"entry\stargets:\n(\d*\s*\)\s\d+.*\d*\n)*\n*take"
+            return convert_string_to_list(signal_text, pattern)
+
+        @staticmethod
+        def targets(signal_text):
+            pattern = r"take-profit\stargets:\n(\d*\s*\)\s*\d+.*\d*\n)*\n*stop"
+            return convert_string_to_list(signal_text, pattern)
+
+        @staticmethod
+        def stop(signal_text):
+            pattern = r"stop\stargets:\n(\d*\s*\)\s*\d+.*\d*\n)*\n*"
+            return convert_string_to_list(signal_text, pattern)
+
+    class Turkish:
+        @staticmethod
+        def symbol(signal_text):
+            pattern = r"#\w+\/\w+"
+            match = re.search(pattern, signal_text)
+
+            if match:
+                return match.group().replace("#", "").replace("/", "").upper() + " Perpetual"
+            else:
+                return False
+
+        @staticmethod
+        def signal_type(signal_text):
+            pattern = r"usdt\s*#\w*"
+
+            match = re.search(pattern, signal_text)
+            if match:
+                found_string = match.group().replace("(", "").replace(")", "")
+                if found_string.endswith("short"):
+                    return "short"
+                else:
+                    return "long"
+
+        @staticmethod
+        def leverage(signal_text):
+
+            pattern = r"kaldıraç:\s*\d*"
+
+            match = re.search(pattern, signal_text)
+            if match:
+                found_string = match.group().replace("kaldıraç:", "").strip()
+                return found_string
+            else:
+                return False
+
+        @staticmethod
+        def entry(signal_text):
+            pattern = r"iriş:\s*\n(\d*\s*\)\s*\d*.\d*\n)*"
+            return convert_string_to_list(signal_text, pattern)
+
+        @staticmethod
+        def targets(signal_text):
+            pattern = r"edefler:\s*\n(\d*\s*\)\s*\d*.\d*\n)*"
+            return convert_string_to_list(signal_text, pattern)
+
+        @staticmethod
+        def stop(signal_text):
+            pattern = r"top:\s*\n(\d*\s*\)\s*\d*.\d*\n*)*"
+            return convert_string_to_list(signal_text, pattern)
 
 
 saved_setups = {
@@ -127,7 +179,7 @@ saved_setups = {
         "Turk": {
             "qr": "binance_3",
             "referral": "834236982"
-        },        
+        },
     },
     "bybit": {
         "ByBit QR1": {

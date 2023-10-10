@@ -84,12 +84,12 @@ class AutomaticSignalConv:
         signal_text = update.message.text.lower()
         context.user_data["full_auto_signal"] = True
 
-        symbol = utilities.RegexPatterns.symbol(signal_text)
-        signal_type = utilities.RegexPatterns.signal_type(signal_text)
-        leverage = utilities.RegexPatterns.leverage(signal_text)
-        entry = utilities.RegexPatterns.entry(signal_text)[0]
-        targets = utilities.RegexPatterns.targets(signal_text)
-        stop = utilities.RegexPatterns.stop(signal_text)[0]
+        symbol = utilities.RegexPatterns.Regular.symbol(signal_text)
+        signal_type = utilities.RegexPatterns.Regular.signal_type(signal_text)
+        leverage = utilities.RegexPatterns.Regular.leverage(signal_text)
+        entry = utilities.RegexPatterns.Regular.entry(signal_text)[0]
+        targets = utilities.RegexPatterns.Regular.targets(signal_text)
+        stop = utilities.RegexPatterns.Regular.stop(signal_text)[0]
 
         if not symbol:
             await utilities.send_message(context, update,
@@ -228,12 +228,12 @@ class AutomaticSignalConv:
     async def signal(update, context):
         signal_text = update.message.text.lower()
 
-        symbol = utilities.RegexPatterns.symbol(signal_text)
-        signal_type = utilities.RegexPatterns.signal_type(signal_text)
-        leverage = utilities.RegexPatterns.leverage(signal_text)
-        entry = utilities.RegexPatterns.entry(signal_text)[0]
-        targets = utilities.RegexPatterns.targets(signal_text)
-        stop = utilities.RegexPatterns.stop(signal_text)[0]
+        symbol = utilities.RegexPatterns.Regular.symbol(signal_text)
+        signal_type = utilities.RegexPatterns.Regular.signal_type(signal_text)
+        leverage = utilities.RegexPatterns.Regular.leverage(signal_text)
+        entry = utilities.RegexPatterns.Regular.entry(signal_text)[0]
+        targets = utilities.RegexPatterns.Regular.targets(signal_text)
+        stop = utilities.RegexPatterns.Regular.stop(signal_text)[0]
 
         if not symbol:
             await utilities.send_message(context, update,
@@ -355,10 +355,18 @@ If the information is incorrect, use /cancel to end the process.
         ref = context.user_data["ref"]
 
         media_group = []
+        used_money = 10
+        qty = used_money * float(context.user_data["leverage"])
         for target_id, target in enumerate(targets):
-            deficit = abs(float(target) - float(entry))
-            roi = deficit / float(entry) * 100 * float(leverage) if signal_type == "long" else deficit / float(
-                target) * 100 * float(leverage)
+            if signal_type == "long":
+                loss = float(context.user_data["entry"]) * qty
+                gain = float(target) * qty
+            else:
+                loss = float(target) * qty
+                gain = float(context.user_data["entry"]) * qty
+
+            net_profit = gain - loss
+            roi = net_profit / used_money
             roi = f"+{str(round(roi, 2))}%"
             image_generator.generate_image(image_id, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry), utilities.separate_number(target), qr, ref,
                                            f"{image_id}_{target_id}")
