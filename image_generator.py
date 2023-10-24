@@ -26,6 +26,7 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
     report.draw_referral_and_qr(referral, qr)
 
     img.save(f"./images/{filename}.png")
+    img.show()
 
 
 def get_text_width(text, font):
@@ -253,3 +254,6 @@ class BitgetReport(Report):
         xy = (signal_type_styling.position.x * self.image.size[0], signal_type_styling.position.y * self.image.size[1])
 
         self.draw.text(xy, signal_type, font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size), fill=color)
+
+
+generate_image("bitget_1.png", "ZRXUSDT Perpetual", "short", "20X", "+333.20%", "0.2589", "0.2091", "bitget_1", "ZRXUSDT", "test.png")
