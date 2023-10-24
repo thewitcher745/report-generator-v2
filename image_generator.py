@@ -11,19 +11,19 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
     img = Image.open(f'./background_images/{image_name}')
     draw = ImageDraw.Draw(img)
 
-    report = BinanceReport(styling, img, draw)
+    report = BinanceReport(image_id, styling, img, draw)
 
     if image_id.startswith("bybit"):
-        report = BybitReport(styling, img, draw)
+        report = BybitReport(image_id, styling, img, draw)
 
     elif image_id.startswith("bitget"):
-        report = BitgetReport(styling, img, draw)
+        report = BitgetReport(image_id, styling, img, draw)
 
     report.draw_symbol(symbol)
     report.draw_details(signal_type, leverage)
     report.draw_roi(roi)
     report.draw_prices(entry, target)
-    report.draw_referral_and_qr(referral, qr)
+    # report.draw_referral_and_qr(referral, qr)
 
     img.save(f"./images/{filename}.png")
     img.show()
@@ -56,7 +56,8 @@ def draw_right_aligned_text(text, position, styling, font, draw_object):
 
 # General class containing methods common to all report types
 class Report:
-    def __init__(self, styling, img, draw_object):
+    def __init__(self, image_id, styling, img, draw_object):
+        self.image_id = image_id
         self.styling = styling
         self.image = img
         self.draw = draw_object
@@ -250,10 +251,12 @@ class BitgetReport(Report):
     def draw_signal_type(self, signal_type):
         signal_type_styling = self.styling["signal_type"]
         signal_type = signal_type.capitalize()
-        color = "#fb3832" if signal_type.lower() == "short" else "#438A70"
+        if self.image_id == "bitget_2":
+            signal_type = signal_type.upper()
+        color = "#fb3832" if signal_type.lower() == "short" else "#338d96"
         xy = (signal_type_styling.position.x * self.image.size[0], signal_type_styling.position.y * self.image.size[1])
 
         self.draw.text(xy, signal_type, font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size), fill=color)
 
 
-generate_image("bitget_1.png", "ZRXUSDT Perpetual", "short", "20X", "+333.20%", "0.2589", "0.2091", "bitget_1", "ZRXUSDT", "test.png")
+generate_image("bitget_2.png", "GMTUSDT Perpetual", "short", "20X", "+170.58%", "0.2466", "0.2334", "bitget_1", "ZRXUSDT", "test.png")
