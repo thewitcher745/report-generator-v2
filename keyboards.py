@@ -26,6 +26,17 @@ exchange = InlineKeyboardMarkup([
         InlineKeyboardButton("ByBit", callback_data="bybit"),
         InlineKeyboardButton("Binance", callback_data="binance"),
     ],
+[
+        InlineKeyboardButton("BitGet", callback_data="bitget"),
+    ],
+])
+
+image_bitget = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("BitGet 1", callback_data="bitget_1"),
+        InlineKeyboardButton("BitGet 2", callback_data="bitget_2"),
+        InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
+    ],
 ])
 
 image_bybit = InlineKeyboardMarkup([
@@ -44,6 +55,17 @@ image_binance = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("Binance 3", callback_data="binance_3"),
     ]
+])
+
+qr_bitget= InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("QR 1", callback_data="bitget_1"),
+        InlineKeyboardButton("QR 2", callback_data="bitget_2"),
+        InlineKeyboardButton("QR 3", callback_data="bitget_3")],
+    [
+        InlineKeyboardButton("QR 4", callback_data="bitget_4"),
+        InlineKeyboardButton("QR 5", callback_data="bitget_5"),
+    ],
 ])
 
 qr_bybit = InlineKeyboardMarkup([
@@ -96,6 +118,19 @@ bybit_setups = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("ByBit QR3", callback_data="ByBit QR3"),
         InlineKeyboardButton("ByBit QR4", callback_data="ByBit QR4"),
+    ],
+    [
+        InlineKeyboardButton("Custom...", callback_data="custom"),
+    ],
+])
+
+bitget_setups = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("BitGet QR1", callback_data="BitGet QR1"),
+        InlineKeyboardButton("BitGet QR2", callback_data="BitGet QR2")],
+    [
+        InlineKeyboardButton("BitGet QR3", callback_data="BitGet QR3"),
+        InlineKeyboardButton("BitGet QR4", callback_data="BitGet QR4"),
     ],
     [
         InlineKeyboardButton("Custom...", callback_data="custom"),

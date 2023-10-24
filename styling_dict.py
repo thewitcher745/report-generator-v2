@@ -145,4 +145,22 @@ styling_dict = {
                                    color="black"),
         "qr_code": ElementStyling(position=Position(0.842, 0.793), size=150)
     },
+    "bitget_1": {
+        "symbol": ElementStyling(position=Position(0.062, 0.07), font="./fonts/IBMPlexSans-Medium.ttf", font_size=54,
+                                 color=(255, 255, 255)),
+        "signal_type": ElementStyling(position=Position(0.062, 0.225), font="./fonts/IBMPlexSans-Medium.TTF",
+                                      font_size=35,
+                                      margin_x=10,
+                                      margin_y=12,
+                                      margin_y_mult=0.7,
+                                      color=(255, 255, 255)),
+        "leverage": ElementStyling(position=Position(0.22, 0.225), font="./fonts/IBMPlexSans-SemiBold.TTF", font_size=35,
+                                   color="#7e898b"),
+        "roi": ElementStyling(position=Position(0.048, 0.43), font="./fonts/IBMPlexSans-Medium.ttf", font_size=100,
+                              color="#04a3c0"),
+        "entry": ElementStyling(position=Position(0.34, 0.72), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=37,
+                                color="white"),
+        "target": ElementStyling(position=Position(0.34, 0.82), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=37,
+                                 color="white"),
+    },
 }

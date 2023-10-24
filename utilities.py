@@ -21,7 +21,6 @@ def convert_string_to_list(signal_text, pattern):
     result_list = []
 
     match = re.search(pattern, signal_text)
-    print(match)
     if match:
         stripped_result_list_numbered_list = re.findall(r"\d\)\s*\d+.?\d*", match.group())
         for result_numbered_item in stripped_result_list_numbered_list:
@@ -41,7 +40,8 @@ def get_pair_precision(pair, exchange):
             if pair_name != "PAIR":
                 pair_precision_dict[pair_name] = {
                     "binance": row[1],
-                    "bybit": row[2]
+                    "bybit": row[2],
+                    "bitget": row[3]
                 }
 
     return int(pair_precision_dict[pair][exchange])
@@ -196,6 +196,24 @@ saved_setups = {
         },
         "ByBit QR4": {
             "qr": "binance_4",
+            "referral": "WMT6QJ"
+        }
+    },
+    "bitget": {
+        "BitGet QR1": {
+            "qr": "bitget_1",
+            "referral": "NKE6GL"
+        },
+        "BitGet QR2": {
+            "qr": "bitget_2",
+            "referral": "HRB7WN"
+        },
+        "BitGet QR3": {
+            "qr": "bitget_3",
+            "referral": "SOV2XR"
+        },
+        "BitGet QR4": {
+            "qr": "bitget_4",
             "referral": "WMT6QJ"
         }
     }

@@ -176,6 +176,9 @@ class AutomaticSignalConv:
         elif exchange == "binance":
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_binance, is_callback_query=True)
+        elif exchange == "bitget":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_bitget, is_callback_query=True)
 
         return AutomaticSignalConv.IMAGE
 
@@ -188,6 +191,8 @@ class AutomaticSignalConv:
             keyboard = keyboards.bybit_setups
             if context.user_data["exchange"] == "binance":
                 keyboard = keyboards.binance_setups
+            elif context.user_data["exchange"] == "bitget":
+                keyboard = keyboards.bitget_setups
             setup_message = "❓ Select a saved setup below, or press custom to enter your own referral info: "
             await utilities.send_message(context, update, setup_message, keyboard=keyboard, is_callback_query=True)
 
@@ -205,6 +210,8 @@ class AutomaticSignalConv:
             keyboard = keyboards.qr_bybit
             if exchange == "binance":
                 keyboard = keyboards.qr_binance
+            elif exchange == "binance":
+                keyboard = keyboards.qr_bitget
             await utilities.send_message(context, update, qr_message, keyboard=keyboard, is_callback_query=True)
             return AutomaticSignalConv.QR
         else:
@@ -293,6 +300,8 @@ If the information is incorrect, use /cancel to end the process.
         keyboard = keyboards.qr_bybit
         if context.user_data["exchange"] == "binance":
             keyboard = keyboards.qr_binance
+        elif context.user_data["exchange"] == "bitget":
+            keyboard = keyboards.qr_bitget
 
         qr_message = "❓ Select a QR code from below: "
         await utilities.send_message(context, update, qr_message, keyboard=keyboard)
@@ -327,16 +336,13 @@ If the information is incorrect, use /cancel to end the process.
         for filename in os.listdir("./images"):
             os.remove("./images/" + filename)
 
-        image_id = context.user_data["image_id"]
+        image_name = context.user_data["image_id"] + ".png"
+        image_id = image_name.split(".")[0]
         symbol = context.user_data["symbol"]
         signal_type = context.user_data["signal_type"].capitalize()
-        leverage = context.user_data["leverage"].upper()
-        if context.user_data["exchange"] == "binance":
-            context.user_data["leverage"].lower()
+        leverage = context.user_data["leverage"]
 
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
-        if context.user_data["exchange"] == "bybit":
-            symbol = stripped_symbol
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
             if symbol_precision == 0:
@@ -368,7 +374,8 @@ If the information is incorrect, use /cancel to end the process.
             net_profit = gain - loss
             roi = net_profit / used_money * 100
             roi = f"+{str(round(roi, 2))}%"
-            image_generator.generate_image(image_id, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry), utilities.separate_number(target), qr, ref,
+            image_generator.generate_image(image_name, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry),
+                                           utilities.separate_number(target), qr, ref,
                                            f"{image_id}_{target_id}")
 
             media_group.append(InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", 'rb')))
