@@ -259,4 +259,4 @@ class BitgetReport(Report):
         self.draw.text(xy, signal_type, font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size), fill=color)
 
 
-# generate_image("bitget_2.png", "GMTUSDT Perpetual", "short", "20X", "+170.58%", "0.2466", "0.2334", "bitget_1", "ZRXUSDT", "test.png")
+# generate_image("bitget_3.png", "GMTUSDT Perpetual", "short", "20X", "+170.58%", "0.2466", "0.2334", "bitget_1", "ZRXUSDT", "test.png")
