@@ -1,13 +1,11 @@
 from telegram import InputMediaPhoto
 from telegram.ext import ConversationHandler
-from binance.client import Client
 
 import image_generator
 import keyboards
 import utilities
 import os
 
-client = Client("", "")
 
 
 async def welcome(update, context):

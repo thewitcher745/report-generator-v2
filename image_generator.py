@@ -224,7 +224,8 @@ class BybitReport(Report):
 
 class BitgetReport(Report):
     def draw_symbol(self, symbol):
-        symbol = symbol.replace(" Perpetual", "")
+        if self.image_id != "bitget_4":
+            symbol = symbol.replace(" Perpetual", "")
         symbol_styling = self.styling["symbol"]
         xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
         self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
@@ -238,11 +239,15 @@ class BitgetReport(Report):
         self.draw_target(target)
 
     def draw_referral_and_qr(self, referral, qr):
+        if self.image_id == "biget_4":
+            pass
         pass
 
     def draw_leverage(self, leverage):
         leverage_styling = self.styling["leverage"]
         leverage = leverage.upper()
+        if self.image_id == "bitget_4":
+            leverage = leverage.lower()
         font = ImageFont.truetype(leverage_styling.font, leverage_styling.font_size)
 
         xy = (leverage_styling.position.x * self.image.size[0], leverage_styling.position.y * self.image.size[1])
@@ -253,10 +258,14 @@ class BitgetReport(Report):
         signal_type = signal_type.capitalize()
         if self.image_id == "bitget_2":
             signal_type = signal_type.upper()
+
         color = "#fb3832" if signal_type.lower() == "short" else "#338d96"
+        if self.image_id == "bitget_4":
+            color = "#aa4e81" if signal_type.lower() == "short" else "#3ba3a3"
+
         xy = (signal_type_styling.position.x * self.image.size[0], signal_type_styling.position.y * self.image.size[1])
 
         self.draw.text(xy, signal_type, font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size), fill=color)
 
 
-# generate_image("bitget_3.png", "GMTUSDT Perpetual", "short", "20X", "+170.58%", "0.2466", "0.2334", "bitget_1", "ZRXUSDT", "test.png")
+# generate_image("bitget_4.png", "BTCUSDT Perpetual", "short", "20X", "+22.93%", "29969.3", "29630.0", "bitget_1", "0xBCa6......708D", "test.png")

@@ -1,5 +1,4 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-import utilities
 
 welcome = InlineKeyboardMarkup([
     [
@@ -34,8 +33,9 @@ exchange = InlineKeyboardMarkup([
 image_bitget = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("BitGet 1", callback_data="bitget_1"),
-        InlineKeyboardButton("BitGet 2", callback_data="bitget_2"),
-        InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
+        InlineKeyboardButton("BitGet 2 CAN", callback_data="bitget_2"),
+        InlineKeyboardButton("BitGet 2 KRIPTOATTILA", callback_data="bitget_3"),
+        InlineKeyboardButton("BitGet 3", callback_data="bitget_4"),
     ],
 ])
 
