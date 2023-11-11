@@ -1,12 +1,14 @@
 from PIL import Image, ImageDraw, ImageFont
 import datetime
+from dotenv import dotenv_values
 
 from styling_dict import styling_dict, Position
 
+mode = dotenv_values(".env.secret")["MODE"]
 
-def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target, qr_code, referral, filename, gen_date: datetime.datetime):
+def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target, qr_code, referral, filename, gen_date: datetime.datetime,
+                   username: str):
     image_id = image_name.split(".")[0]
-    qr = image_id
 
     styling = styling_dict[image_id]
     img = Image.open(f'./background_images/{image_name}')
@@ -21,13 +23,14 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
         report = BitgetReport(image_id, styling, img, draw)
 
     report.draw_symbol(symbol)
-    report.draw_details(signal_type, leverage, gen_date)
+    report.draw_details(signal_type, leverage, gen_date, username)
     report.draw_roi(roi)
     report.draw_prices(entry, target)
-    report.draw_referral_and_qr(referral, qr)
+    report.draw_referral_and_qr(referral, qr_code)
 
     img.save(f"./images/{filename}.png")
-    # img.show()
+    if mode == "dev":
+        img.show()
 
 
 def get_text_width(text, font):
@@ -113,7 +116,7 @@ class BinanceReport(Report):
         xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
         self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
 
-    def draw_details(self, signal_type, leverage, datetime):
+    def draw_details(self, signal_type, leverage, datetime, username):
         self.draw_vertical_lines()
         self.draw_leverage(leverage)
         self.draw_signal_type(signal_type)
@@ -168,7 +171,7 @@ class BybitReport(Report):
         xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
         self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
 
-    def draw_details(self, signal_type, leverage, datetime):
+    def draw_details(self, signal_type, leverage, datetime, username):
         self.draw_signal_type_and_leverage(signal_type, leverage)
 
     def draw_prices(self, entry, target):
@@ -215,8 +218,8 @@ class BybitReport(Report):
         box_width = get_text_width(text, font) + 2 * margin_x
         box_height = get_text_height(text, font) + 2 * margin_y
 
-        box_color = (64, 38, 39) if signal_type.lower() == "short" else (34, 51, 45)
-        text_color = (220, 66, 90) if signal_type.lower() == "short" else (33, 182, 114)
+        text_color = signal_type_styling.short_color if signal_type.lower() == "short" else signal_type_styling.long_color
+        box_color = signal_type_styling.short_box_color if signal_type.lower() == "short" else signal_type_styling.long_box_color
         draw_transparent_rrect(box_xy, (box_width, box_height), radius, box_color, 190, self.image)
         self.draw.text(text_xy, text,
                        font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size),
@@ -225,48 +228,76 @@ class BybitReport(Report):
 
 class BitgetReport(Report):
     def draw_symbol(self, symbol):
-        if self.image_id != "bitget_4":
+        if self.image_id != "bitget_3":
             symbol = symbol.replace(" Perpetual", "")
         symbol_styling = self.styling["symbol"]
         xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
         self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
 
-    def draw_details(self, signal_type, leverage, gen_date: datetime.datetime):
+    def draw_details(self, signal_type, leverage, gen_date: datetime.datetime, username):
         self.draw_leverage(leverage)
         self.draw_signal_type(signal_type)
-        if self.image_id in ["bitget_4", "bitget_5"]:
-            self.draw_datetime(gen_date)
+
+        try:
+            if self.styling["draw_datetime"]:
+                self.draw_datetime(gen_date)
+        except KeyError:
+            pass
+
+        try:
+            if self.styling["draw_username"]:
+                self.draw_username(username)
+        except KeyError:
+            pass
 
     def draw_prices(self, entry, target):
         self.draw_entry(entry)
         self.draw_target(target)
 
     def draw_referral_and_qr(self, referral, qr):
-        if self.image_id in ["bitget_4", "bitget_5"]:
-            self.draw_qr(qr)
-            self.draw_referral_code(referral)
+        try:
+            if self.styling["draw_qr_referral"]:
+                self.draw_qr(qr)
+                self.draw_referral_code(referral)
+        except KeyError:
+            pass
 
     def draw_leverage(self, leverage):
         leverage_styling = self.styling["leverage"]
         leverage = leverage.upper()
-        if self.image_id == "bitget_4":
+        if self.image_id == "bitget_3":
             leverage = leverage.lower()
         font = ImageFont.truetype(leverage_styling.font, leverage_styling.font_size)
 
         xy = (leverage_styling.position.x * self.image.size[0], leverage_styling.position.y * self.image.size[1])
         self.draw.text(xy, leverage, font=font, fill=leverage_styling.color)
 
+    def draw_username(self, username):
+        username_styling = self.styling["username"]
+
+        font = ImageFont.truetype(username_styling.font, username_styling.font_size)
+
+        xy = (username_styling.position.x * self.image.size[0], username_styling.position.y * self.image.size[1])
+        self.draw.text(xy, username, font=font, fill=username_styling.color)
+
+        try:
+            username_id_styling = self.styling["username_id"]
+            username_id = f"@{username.lower()}"
+
+            font = ImageFont.truetype(username_id_styling.font, username_id_styling.font_size)
+
+            xy = (username_id_styling.position.x * self.image.size[0], username_id_styling.position.y * self.image.size[1])
+            self.draw.text(xy, username_id, font=font, fill=username_id_styling.color)
+        except KeyError:
+            pass
+
     def draw_signal_type(self, signal_type):
         signal_type_styling = self.styling["signal_type"]
         signal_type = signal_type.capitalize()
-        if self.image_id == "bitget_2":
+        if self.image_id.startswith("bitget_2"):
             signal_type = signal_type.upper()
 
-        color = "#fb3832" if signal_type.lower() == "short" else "#338d96"
-        if self.image_id == "bitget_4":
-            color = "#aa4e81" if signal_type.lower() == "short" else "#3ba3a3"
-        elif self.image_id == "bitget_5":
-            color = "#ff474d" if signal_type.lower() == "short" else "#299bb6"
+        color = signal_type_styling.short_color if signal_type.lower() == "short" else signal_type_styling.long_color
 
         xy = (signal_type_styling.position.x * self.image.size[0], signal_type_styling.position.y * self.image.size[1])
 
@@ -278,17 +309,12 @@ class BitgetReport(Report):
         font = ImageFont.truetype(datetime_styling.font, datetime_styling.font_size)
         xy = (datetime_styling.position.x * self.image.size[0], datetime_styling.position.y * self.image.size[1])
         datetime_string = f"{gen_date.year}-{gen_date.month}-{gen_date.day} {gen_date.hour}:{gen_date.minute}"
-        if self.image_id == "bitget_5":
-            utc_offset = datetime.datetime.fromtimestamp(1) - datetime.datetime.utcfromtimestamp(1)
-            offset_minutes = (utc_offset.seconds // 60) % 60
-            offset_hours = utc_offset.seconds // 3600
-            if offset_minutes != 0:
-                datetime_string = f"{gen_date.year}/{gen_date.month}/{gen_date.day} {gen_date.hour}:{gen_date.minute} ( UTC+{offset_hours}:{offset_minutes} )"
-            else:
-                datetime_string = f"{gen_date.year}/{gen_date.month}/{gen_date.day} {gen_date.hour}:{gen_date.minute} ( UTC+{offset_hours} )"
+        if self.image_id.startswith("bitget_4"):
+            datetime_string = f"{gen_date.year}/{gen_date.month}/{gen_date.day} {gen_date.hour}:{gen_date.minute} ( UTC-4 )"
 
         self.draw.text(xy, datetime_string, font=font, fill=datetime_styling.color)
 
 
-# generate_image("bitget_4_turk.png", "GALAUSDT Perpetual", "short", "50X", "+120.93%", "0.9150", "0.8930", "bitget_1", "K01A8CF0", "test.png",
-               # datetime.datetime.now())
+if mode == "dev":
+    generate_image("bitget_2.png", "GALAUSDT Perpetual", "long", "50X", "+120.93%", "0.9150", "0.8930", "bitget_1", "K01A8CF0", "test.png",
+                   datetime.datetime.now(), "CANPREMIUM")

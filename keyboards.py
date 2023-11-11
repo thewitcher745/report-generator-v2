@@ -25,7 +25,7 @@ exchange = InlineKeyboardMarkup([
         InlineKeyboardButton("ByBit", callback_data="bybit"),
         InlineKeyboardButton("Binance", callback_data="binance"),
     ],
-[
+    [
         InlineKeyboardButton("BitGet", callback_data="bitget"),
     ],
 ])
@@ -33,14 +33,10 @@ exchange = InlineKeyboardMarkup([
 image_bitget = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("BitGet 1", callback_data="bitget_1"),
-        InlineKeyboardButton("BitGet 2 CAN", callback_data="bitget_2_can")],
+        InlineKeyboardButton("BitGet 2", callback_data="bitget_2")],
     [
-        InlineKeyboardButton("BitGet 2 Turk", callback_data="bitget_2_turk"),
         InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
-    ],
-    [
-        InlineKeyboardButton("BitGet 4 CAN", callback_data="bitget_4_can"),
-        InlineKeyboardButton("BitGet 4 Turk", callback_data="bitget_4_turk"),
+        InlineKeyboardButton("BitGet 4", callback_data="bitget_4"),
     ],
 ])
 
@@ -62,7 +58,7 @@ image_binance = InlineKeyboardMarkup([
     ]
 ])
 
-qr_bitget= InlineKeyboardMarkup([
+qr_bitget = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("QR 1", callback_data="bitget_1"),
         InlineKeyboardButton("QR 2", callback_data="bitget_2"),

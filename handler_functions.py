@@ -65,7 +65,7 @@ class NormalReportConv:
 
 
 class AutomaticSignalConv:
-    EXCHANGE, SAVED_SETUP, IMAGE, SIGNAL, TARGET, QR, REF = range(7)
+    EXCHANGE, SAVED_SETUP, USERNAME, IMAGE, SIGNAL, TARGET, QR, REF = range(8)
 
     @staticmethod
     async def start(update, context):
@@ -218,16 +218,36 @@ class AutomaticSignalConv:
             context.user_data["qr"] = utilities.saved_setups[exchange][setup]["qr"]
             context.user_data["ref"] = utilities.saved_setups[exchange][setup]["referral"]
 
-            await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
+            if not context.user_data["image_id"] in ["bitget_2", "bitget_4"]:
+                await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
 
-            media_group = await AutomaticSignalConv.generate_images(context, update)
+                media_group = await AutomaticSignalConv.generate_images(context, update)
 
-            for media in media_group:
-                await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
-            await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
-                                         is_callback_query=True)
+                for media in media_group:
+                    await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
+                await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
+                                             is_callback_query=True)
+            else:
+                await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...", is_callback_query=True)
+
+                return AutomaticSignalConv.USERNAME
 
             return ConversationHandler.END
+
+    @staticmethod
+    async def username(update, context):
+        context.user_data["username"] = update.message.text
+
+        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
+
+        media_group = await AutomaticSignalConv.generate_images(context, update)
+
+        for media in media_group:
+            await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
+
+        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+
+        return ConversationHandler.END
 
     @staticmethod
     # This handler takes the forwarded/copied signal and processes it using RegEx using functions provided in utilities
@@ -318,16 +338,23 @@ If the information is incorrect, use /cancel to end the process.
     @staticmethod
     async def ref(update, context):
         context.user_data["ref"] = update.message.text
-        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
 
-        media_group = await AutomaticSignalConv.generate_images(context, update)
+        # Skip to username for images that need a username
+        if not context.user_data["image_id"] in ["bitget_2", "bitget_4"]:
+            await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
 
-        for media in media_group:
-            await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
+            media_group = await AutomaticSignalConv.generate_images(context, update)
 
-        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+            for media in media_group:
+                await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
 
-        return ConversationHandler.END
+            await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+
+            return ConversationHandler.END
+        else:
+            await utilities.send_message(context, update, "❓ Referral set. Type a username as the image needs a username...")
+
+            return AutomaticSignalConv.USERNAME
 
     @staticmethod
     async def generate_images(context, update):
@@ -340,6 +367,7 @@ If the information is incorrect, use /cancel to end the process.
         symbol = context.user_data["symbol"]
         signal_type = context.user_data["signal_type"].capitalize()
         leverage = context.user_data["leverage"]
+        username = context.user_data["username"]
 
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
         try:
@@ -375,7 +403,7 @@ If the information is incorrect, use /cancel to end the process.
             roi = f"+{str(round(roi, 2))}%"
             image_generator.generate_image(image_name, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry),
                                            utilities.separate_number(target), qr, ref,
-                                           f"{image_id}_{target_id}", gen_date=datetime.datetime.now())
+                                           f"{image_id}_{target_id}", gen_date=datetime.datetime.now(), username=username)
 
             media_group.append(InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", 'rb')))
 

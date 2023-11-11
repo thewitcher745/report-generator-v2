@@ -40,6 +40,9 @@ automatic_report_handler = ConversationHandler(
         handlers.AutomaticSignalConv.SAVED_SETUP: [
             CallbackQueryHandler(handlers.AutomaticSignalConv.saved_setup)
         ],
+        handlers.AutomaticSignalConv.USERNAME: [
+            MessageHandler(filters.TEXT, handlers.AutomaticSignalConv.username)
+        ],
         handlers.AutomaticSignalConv.QR: [
             CallbackQueryHandler(handlers.AutomaticSignalConv.qr)
         ],
