@@ -5,6 +5,7 @@ import image_generator
 import keyboards
 import utilities
 import os
+import datetime
 
 
 
@@ -163,7 +164,7 @@ class AutomaticSignalConv:
                                              is_callback_query=True)
                 return AutomaticSignalConv.EXCHANGE
         except KeyError:
-            message = "❌ The selected exchange hasn't been listed for that exchange. Will use the default signal precision."
+            message = "❌ The selected coin hasn't been listed for that exchange. Will use the default signal precision."
             await utilities.send_message(context, update, message, is_callback_query=True)
 
         media_group = [InputMediaPhoto(open(f"./background_images/{exchange}_images.png", 'rb'))]
@@ -374,7 +375,7 @@ If the information is incorrect, use /cancel to end the process.
             roi = f"+{str(round(roi, 2))}%"
             image_generator.generate_image(image_name, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry),
                                            utilities.separate_number(target), qr, ref,
-                                           f"{image_id}_{target_id}")
+                                           f"{image_id}_{target_id}", gen_date=datetime.datetime.now())
 
             media_group.append(InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", 'rb')))
 

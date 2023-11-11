@@ -10,12 +10,19 @@ async def send_message(context, update, message_text, keyboard=None, is_callback
 
 def separate_number(number):
     number_str = str(number)
-    integer_part, decimal_part = number_str.split(".")
-    integer_part = integer_part[::-1]
-    integer_parts = [integer_part[i:i + 3][::-1] for i in range(0, len(integer_part), 3)]
-    integer_parts.reverse()
-    return ",".join(integer_parts) + "." + decimal_part
-
+    split_number = number_str.split(".")
+    if len(split_number) > 1:
+        integer_part, decimal_part = split_number
+        integer_part = integer_part[::-1]
+        integer_parts = [integer_part[i:i + 3][::-1] for i in range(0, len(integer_part), 3)]
+        integer_parts.reverse()
+        return ",".join(integer_parts) + "." + decimal_part
+    else:
+        integer_part = number_str
+        integer_part = integer_part[::-1]
+        integer_parts = [integer_part[i:i + 3][::-1] for i in range(0, len(integer_part), 3)]
+        integer_parts.reverse()
+        return ",".join(integer_parts)
 
 def convert_string_to_list(signal_text, pattern):
     result_list = []

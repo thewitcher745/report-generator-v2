@@ -33,9 +33,14 @@ exchange = InlineKeyboardMarkup([
 image_bitget = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("BitGet 1", callback_data="bitget_1"),
-        InlineKeyboardButton("BitGet 2 CAN", callback_data="bitget_2"),
-        InlineKeyboardButton("BitGet 2 KRIPTOATTILA", callback_data="bitget_3"),
-        InlineKeyboardButton("BitGet 3", callback_data="bitget_4"),
+        InlineKeyboardButton("BitGet 2 CAN", callback_data="bitget_2_can")],
+    [
+        InlineKeyboardButton("BitGet 2 Turk", callback_data="bitget_2_turk"),
+        InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
+    ],
+    [
+        InlineKeyboardButton("BitGet 4 CAN", callback_data="bitget_4_can"),
+        InlineKeyboardButton("BitGet 4 Turk", callback_data="bitget_4_turk"),
     ],
 ])
 
