@@ -1,5 +1,7 @@
 import re
 import csv
+import random
+import os
 
 
 async def send_message(context, update, message_text, keyboard=None, is_callback_query=False):
@@ -23,6 +25,7 @@ def separate_number(number):
         integer_parts = [integer_part[i:i + 3][::-1] for i in range(0, len(integer_part), 3)]
         integer_parts.reverse()
         return ",".join(integer_parts)
+
 
 def convert_string_to_list(signal_text, pattern):
     result_list = []
@@ -48,7 +51,8 @@ def get_pair_precision(pair, exchange):
                 pair_precision_dict[pair_name] = {
                     "binance": row[1],
                     "bybit": row[2],
-                    "bitget": row[3]
+                    "bitget": row[3],
+                    "mexc": row[4]
                 }
 
     return int(pair_precision_dict[pair][exchange])
@@ -189,39 +193,92 @@ saved_setups = {
         },
     },
     "bybit": {
-        "ByBit QR1": {
+        "CAN Main": {
             "qr": "bybit_1",
             "referral": "NKE6GL"
         },
-        "ByBit QR2": {
+        "CAN Free": {
             "qr": "bybit_2",
             "referral": "HRB7WN"
         },
-        "ByBit QR3": {
-            "qr": "binance_3",
+        "Turk Main": {
+            "qr": "bybit_3",
             "referral": "SOV2XR"
         },
-        "ByBit QR4": {
-            "qr": "binance_4",
+        "Turk Free": {
+            "qr": "bybit_4",
             "referral": "WMT6QJ"
         }
     },
     "bitget": {
-        "BitGet QR1": {
+        "CAN Main": {
+            "qr": "bitget_1",
+            "referral": "0x932C......78Ca"
+        },
+        "CAN Free": {
+            "qr": "bitget_2",
+            "referral": "0x1c80......4cD1"
+        },
+        "Turk Main": {
+            "qr": "bitget_3",
+            "referral": "0x7aD6......1532"
+        },
+        "Turk Free": {
+            "qr": "bitget_4",
+            "referral": "0x828d......84D7"
+        }
+    },
+    "mexc": {
+        "CAN Main": {
             "qr": "bitget_1",
             "referral": "NKE6GL"
         },
-        "BitGet QR2": {
+        "CAN Free": {
             "qr": "bitget_2",
             "referral": "HRB7WN"
         },
-        "BitGet QR3": {
+        "Turk Main": {
             "qr": "bitget_3",
             "referral": "SOV2XR"
         },
-        "BitGet QR4": {
+        "Turk Free": {
             "qr": "bitget_4",
             "referral": "WMT6QJ"
         }
     }
 }
+
+
+def random_referral(exchange):
+    def range_char(start, stop):
+        return [chr(n) for n in range(ord(start), ord(stop) + 1)]
+
+    if exchange == "binance":
+        char_set_1 = range_char("1", "9")
+        char_set_2 = range_char("0", "9")
+
+        return ''.join(random.sample(char_set_1, 1) + random.sample(char_set_2, 8))
+
+    elif exchange == "bybit":
+        char_set = range_char("A", "Z") + range_char("0", "9")
+        return ''.join(random.sample(char_set, 6))
+
+    elif exchange == "bitget":
+        char_set = range_char("A", "Z") + range_char("a", "z") + range_char("0", "9")
+        string_1 = ''.join(random.sample(char_set, 4))
+        string_2 = ''.join(random.sample(char_set, 4))
+        return f"0x{string_1}......{string_2}"
+
+    elif exchange == "mexc":
+        char_set = range_char("A", "Z") + range_char("a", "z") + range_char("0", "9")
+        return ''.join(random.sample(char_set, 5))
+
+
+def random_qr(exchange):
+    qrs = []
+    for filename in os.listdir("./qr/"):
+        if filename.startswith(exchange):
+            print(filename)
+            qrs.append(filename.replace(".png", ""))
+
+    return random.sample(qrs, 1)[0]

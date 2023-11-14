@@ -8,7 +8,6 @@ import os
 import datetime
 
 
-
 async def welcome(update, context):
     await utilities.send_message(context, update, "🙏 Welcome. Choose an option below:", keyboard=keyboards.welcome)
 
@@ -178,6 +177,9 @@ class AutomaticSignalConv:
         elif exchange == "bitget":
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_bitget, is_callback_query=True)
+        elif exchange == "mexc":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_mexc, is_callback_query=True)
 
         return AutomaticSignalConv.IMAGE
 
@@ -192,7 +194,10 @@ class AutomaticSignalConv:
                 keyboard = keyboards.binance_setups
             elif context.user_data["exchange"] == "bitget":
                 keyboard = keyboards.bitget_setups
-            setup_message = "❓ Select a saved setup below, or press custom to enter your own referral info: "
+            elif context.user_data["exchange"] == "mexc":
+                keyboard = keyboards.mexc_setups
+
+            setup_message = "❓ Select a saved setup below, press custom to enter your own referral info, or random for a randomized QR/Referral:"
             await utilities.send_message(context, update, setup_message, keyboard=keyboard, is_callback_query=True)
 
             return AutomaticSignalConv.SAVED_SETUP
@@ -204,6 +209,8 @@ class AutomaticSignalConv:
     async def saved_setup(update, context):
         exchange = context.user_data["exchange"]
         await update.callback_query.answer()
+
+        # If user asks to type the qr and referral
         if update.callback_query.data == "custom":
             qr_message = "❓ Please select a QR code from below: "
             keyboard = keyboards.qr_bybit
@@ -213,6 +220,31 @@ class AutomaticSignalConv:
                 keyboard = keyboards.qr_bitget
             await utilities.send_message(context, update, qr_message, keyboard=keyboard, is_callback_query=True)
             return AutomaticSignalConv.QR
+
+        # If randomized data is requested
+        if update.callback_query.data == "random":
+            context.user_data["ref"] = utilities.random_referral(context.user_data["exchange"])
+            context.user_data["qr"] = utilities.random_qr(context.user_data["exchange"])
+
+            random_setup_message = f"Random setup selected: \nReferral code: {context.user_data['qr']}\n{context.user_data['qr']}"
+            if not context.user_data["image_id"] in ["bitget_2", "bitget_4"]:
+                await utilities.send_message(context, update, random_setup_message, is_callback_query=True)
+                await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
+
+                media_group = await AutomaticSignalConv.generate_images(context, update)
+
+                for media in media_group:
+                    await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
+                await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
+                                             is_callback_query=True)
+            else:
+                await utilities.send_message(context, update, random_setup_message, is_callback_query=True)
+                await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...",
+                                             is_callback_query=True)
+
+                return AutomaticSignalConv.USERNAME
+
+        # If a preset setup is selected
         else:
             setup = update.callback_query.data
             context.user_data["qr"] = utilities.saved_setups[exchange][setup]["qr"]
@@ -228,7 +260,8 @@ class AutomaticSignalConv:
                 await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
                                              is_callback_query=True)
             else:
-                await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...", is_callback_query=True)
+                await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...",
+                                             is_callback_query=True)
 
                 return AutomaticSignalConv.USERNAME
 
@@ -367,7 +400,11 @@ If the information is incorrect, use /cancel to end the process.
         symbol = context.user_data["symbol"]
         signal_type = context.user_data["signal_type"].capitalize()
         leverage = context.user_data["leverage"]
-        username = context.user_data["username"]
+
+        if "username" in context.user_data.keys():
+            username = context.user_data["username"]
+        else:
+            username = ""
 
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
         try:

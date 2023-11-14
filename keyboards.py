@@ -27,24 +27,7 @@ exchange = InlineKeyboardMarkup([
     ],
     [
         InlineKeyboardButton("BitGet", callback_data="bitget"),
-    ],
-])
-
-image_bitget = InlineKeyboardMarkup([
-    [
-        InlineKeyboardButton("BitGet 1", callback_data="bitget_1"),
-        InlineKeyboardButton("BitGet 2", callback_data="bitget_2")],
-    [
-        InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
-        InlineKeyboardButton("BitGet 4", callback_data="bitget_4"),
-    ],
-])
-
-image_bybit = InlineKeyboardMarkup([
-    [
-        InlineKeyboardButton("ByBit 1", callback_data="bybit_1"),
-        InlineKeyboardButton("ByBit 2", callback_data="bybit_2"),
-        InlineKeyboardButton("ByBit 3", callback_data="bybit_3"),
+        InlineKeyboardButton("MEXC", callback_data="mexc"),
     ],
 ])
 
@@ -58,14 +41,39 @@ image_binance = InlineKeyboardMarkup([
     ]
 ])
 
-qr_bitget = InlineKeyboardMarkup([
+image_bybit = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("QR 1", callback_data="bitget_1"),
-        InlineKeyboardButton("QR 2", callback_data="bitget_2"),
-        InlineKeyboardButton("QR 3", callback_data="bitget_3")],
+        InlineKeyboardButton("ByBit 1", callback_data="bybit_1"),
+        InlineKeyboardButton("ByBit 2", callback_data="bybit_2"),
+        InlineKeyboardButton("ByBit 3", callback_data="bybit_3"),
+    ],
+])
+
+image_bitget = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("QR 4", callback_data="bitget_4"),
-        InlineKeyboardButton("QR 5", callback_data="bitget_5"),
+        InlineKeyboardButton("BitGet 1", callback_data="bitget_1"),
+        InlineKeyboardButton("BitGet 2", callback_data="bitget_2")],
+    [
+        InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
+        InlineKeyboardButton("BitGet 4", callback_data="bitget_4"),
+    ],
+])
+
+image_mexc = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("MEXC 1", callback_data="mexc_1"),
+    ]
+])
+
+qr_binance = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("QR 1", callback_data="binance_1"),
+        InlineKeyboardButton("QR 2", callback_data="binance_2"),
+        InlineKeyboardButton("QR 3", callback_data="binance_3")],
+    [
+        InlineKeyboardButton("QR 4", callback_data="binance_4"),
+        InlineKeyboardButton("QR 5", callback_data="binance_5"),
+        InlineKeyboardButton("QR 5", callback_data="binance_6"),
     ],
 ])
 
@@ -80,15 +88,25 @@ qr_bybit = InlineKeyboardMarkup([
     ],
 ])
 
-qr_binance = InlineKeyboardMarkup([
+qr_bitget = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("QR 1", callback_data="binance_1"),
-        InlineKeyboardButton("QR 2", callback_data="binance_2"),
-        InlineKeyboardButton("QR 3", callback_data="binance_3")],
+        InlineKeyboardButton("QR 1", callback_data="bitget_1"),
+        InlineKeyboardButton("QR 2", callback_data="bitget_2"),
+        InlineKeyboardButton("QR 3", callback_data="bitget_3")],
     [
-        InlineKeyboardButton("QR 4", callback_data="binance_4"),
-        InlineKeyboardButton("QR 5", callback_data="binance_5"),
-        InlineKeyboardButton("QR 5", callback_data="binance_6"),
+        InlineKeyboardButton("QR 4", callback_data="bitget_4"),
+        InlineKeyboardButton("QR 5", callback_data="bitget_5"),
+    ],
+])
+
+qr_mexc = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("QR 1", callback_data="mexc_1"),
+        InlineKeyboardButton("QR 2", callback_data="mexc_2"),
+        InlineKeyboardButton("QR 3", callback_data="mexc_3")],
+    [
+        InlineKeyboardButton("QR 4", callback_data="mexc_4"),
+        InlineKeyboardButton("QR 5", callback_data="mexc_5"),
     ],
 ])
 
@@ -109,31 +127,48 @@ binance_setups = InlineKeyboardMarkup([
     ],
     [
         InlineKeyboardButton("Custom...", callback_data="custom"),
+        InlineKeyboardButton("Random...", callback_data="random"),
     ],
 ])
 
 bybit_setups = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("ByBit QR1", callback_data="ByBit QR1"),
-        InlineKeyboardButton("ByBit QR2", callback_data="ByBit QR2")],
+        InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
+        InlineKeyboardButton("CAN Free", callback_data="CAN Free")],
     [
-        InlineKeyboardButton("ByBit QR3", callback_data="ByBit QR3"),
-        InlineKeyboardButton("ByBit QR4", callback_data="ByBit QR4"),
+        InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
+        InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
     ],
     [
         InlineKeyboardButton("Custom...", callback_data="custom"),
+        InlineKeyboardButton("Random...", callback_data="random"),
     ],
 ])
 
 bitget_setups = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("BitGet QR1", callback_data="BitGet QR1"),
-        InlineKeyboardButton("BitGet QR2", callback_data="BitGet QR2")],
+        InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
+        InlineKeyboardButton("CAN Free", callback_data="CAN Free")],
     [
-        InlineKeyboardButton("BitGet QR3", callback_data="BitGet QR3"),
-        InlineKeyboardButton("BitGet QR4", callback_data="BitGet QR4"),
+        InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
+        InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
     ],
     [
         InlineKeyboardButton("Custom...", callback_data="custom"),
+        InlineKeyboardButton("Random...", callback_data="random"),
+    ],
+])
+
+mexc_setups = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
+        InlineKeyboardButton("CAN Free", callback_data="CAN Free")],
+    [
+        InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
+        InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
+    ],
+    [
+        InlineKeyboardButton("Custom...", callback_data="custom"),
+        InlineKeyboardButton("Random...", callback_data="random"),
     ],
 ])

@@ -6,6 +6,7 @@ from styling_dict import styling_dict, Position
 
 mode = dotenv_values(".env.secret")["MODE"]
 
+
 def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target, qr_code, referral, filename, gen_date: datetime.datetime,
                    username: str):
     image_id = image_name.split(".")[0]
@@ -21,6 +22,9 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
 
     elif image_id.startswith("bitget"):
         report = BitgetReport(image_id, styling, img, draw)
+
+    elif image_id.startswith("mexc"):
+        report = MexcReport(image_id, styling, img, draw)
 
     report.draw_symbol(symbol)
     report.draw_details(signal_type, leverage, gen_date, username)
@@ -287,6 +291,7 @@ class BitgetReport(Report):
             font = ImageFont.truetype(username_id_styling.font, username_id_styling.font_size)
 
             xy = (username_id_styling.position.x * self.image.size[0], username_id_styling.position.y * self.image.size[1])
+
             self.draw.text(xy, username_id, font=font, fill=username_id_styling.color)
         except KeyError:
             pass
@@ -315,6 +320,89 @@ class BitgetReport(Report):
         self.draw.text(xy, datetime_string, font=font, fill=datetime_styling.color)
 
 
+class MexcReport(Report):
+    def draw_symbol(self, symbol):
+        symbol_styling = self.styling["symbol"]
+        xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
+        symbol = symbol.replace("USDT", " USDT")
+        self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
+
+    def draw_details(self, signal_type, leverage, gen_date: datetime.datetime, username):
+        self.draw_signal_type_and_leverage(signal_type, leverage)
+
+        try:
+            if self.styling["draw_datetime"]:
+                self.draw_datetime(gen_date)
+        except KeyError:
+            pass
+
+        try:
+            if self.styling["draw_username"]:
+                self.draw_username(username)
+        except KeyError:
+            pass
+
+    def draw_prices(self, entry, target):
+        entry = "$" + entry
+        target = "$" + target
+        self.draw_entry(entry)
+        self.draw_target(target)
+
+    def draw_referral_and_qr(self, referral, qr):
+        try:
+            if self.styling["draw_qr_referral"]:
+                self.draw_qr(qr)
+                self.draw_referral_code(referral)
+        except KeyError:
+            pass
+
+    def draw_signal_type_and_leverage(self, signal_type, leverage):
+        signal_type_styling = self.styling["signal_type"]
+        leverage = leverage.upper()
+        signal_type = signal_type.capitalize()
+        font = ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size)
+
+        # MEXC_1
+        signal_type_width = get_text_width(signal_type, font)
+        signal_type_color = signal_type_styling.long_color if signal_type.lower() == "long" else signal_type_styling.short_color
+        starting_xy = (signal_type_styling.position.x * self.image.size[0], signal_type_styling.position.y * self.image.size[1])
+
+        self.draw.text(starting_xy, signal_type, font=font, fill=signal_type_color)
+        leverage_xy = (starting_xy[0] + signal_type_width + 5, starting_xy[1])
+        self.draw.text(leverage_xy, "/" + leverage, font=font, fill="white")
+
+    def draw_username(self, username):
+        username_styling = self.styling["username"]
+
+        font = ImageFont.truetype(username_styling.font, username_styling.font_size)
+
+        xy = (username_styling.position.x * self.image.size[0], username_styling.position.y * self.image.size[1])
+        self.draw.text(xy, username, font=font, fill=username_styling.color)
+
+        try:
+            username_id_styling = self.styling["username_id"]
+            username_id = f"@{username.lower()}"
+
+            font = ImageFont.truetype(username_id_styling.font, username_id_styling.font_size)
+
+            xy = (username_id_styling.position.x * self.image.size[0], username_id_styling.position.y * self.image.size[1])
+
+            self.draw.text(xy, username_id, font=font, fill=username_id_styling.color)
+        except KeyError:
+            pass
+
+    def draw_datetime(self, gen_date: datetime.datetime):
+        datetime_styling = self.styling["gen_date"]
+
+        font = ImageFont.truetype(datetime_styling.font, datetime_styling.font_size)
+        xy = (datetime_styling.position.x * self.image.size[0], datetime_styling.position.y * self.image.size[1])
+        datetime_string = f"{gen_date.year}-{gen_date.month}-{gen_date.day} {gen_date.hour}:{gen_date.minute}:{gen_date.second}"
+        if self.image_id.startswith("bitget_4"):
+            datetime_string = f"{gen_date.year}/{gen_date.month}/{gen_date.day} {gen_date.hour}:{gen_date.minute} ( UTC-4 )"
+
+        self.draw.text(xy, datetime_string, font=font, fill=datetime_styling.color)
+
+
 if mode == "dev":
-    generate_image("bitget_2.png", "GALAUSDT Perpetual", "long", "50X", "+120.93%", "0.9150", "0.8930", "bitget_1", "K01A8CF0", "test.png",
+    generate_image("bitget_3.png", "LOOMUSDT Perpetual", "short", "9X", "+403.14%", "0.0968", "0.1402", "mexc_1", "K01A8CF0", "test.png",
                    datetime.datetime.now(), "CANPREMIUM")
