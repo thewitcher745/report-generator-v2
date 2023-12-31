@@ -55,7 +55,10 @@ def get_pair_precision(pair, exchange):
                     "mexc": row[4]
                 }
 
-    return int(pair_precision_dict[pair][exchange])
+    if pair_precision_dict[pair][exchange]:
+        return int(pair_precision_dict[pair][exchange])
+    else:
+        return None
 
 
 class RegexPatterns:

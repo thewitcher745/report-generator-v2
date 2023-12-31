@@ -7,6 +7,8 @@ import utilities
 import os
 import datetime
 
+from styling_dict import styling_dict
+
 
 async def welcome(update, context):
     await utilities.send_message(context, update, "🙏 Welcome. Choose an option below:", keyboard=keyboards.welcome)
@@ -157,13 +159,13 @@ class AutomaticSignalConv:
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
-            if symbol_precision == 0:
+            if symbol_precision is None:
                 error_message = "❌ The selected exchange doesn't support the given symbol. Please try another exchange."
                 await utilities.send_message(context, update, error_message, keyboard=keyboards.exchange,
                                              is_callback_query=True)
                 return AutomaticSignalConv.EXCHANGE
         except KeyError:
-            message = "❌ The selected coin hasn't been listed for that exchange. Will use the default signal precision."
+            message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
             await utilities.send_message(context, update, message, is_callback_query=True)
 
         media_group = [InputMediaPhoto(open(f"./background_images/{exchange}_images.png", 'rb'))]
@@ -222,7 +224,7 @@ class AutomaticSignalConv:
             return AutomaticSignalConv.QR
 
         # If randomized data is requested
-        if update.callback_query.data == "random":
+        elif update.callback_query.data == "random":
             context.user_data["ref"] = utilities.random_referral(context.user_data["exchange"])
             context.user_data["qr"] = utilities.random_qr(context.user_data["exchange"])
 
@@ -409,7 +411,7 @@ If the information is incorrect, use /cancel to end the process.
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
-            if symbol_precision == 0:
+            if symbol_precision is None:
                 error_message = "❌ The selected exchange doesn't support the given symbol. Please try another exchange."
                 await utilities.send_message(context, update, error_message)
                 return ConversationHandler.END
