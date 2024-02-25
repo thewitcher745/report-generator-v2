@@ -248,6 +248,24 @@ saved_setups = {
             "qr": "bitget_4",
             "referral": "WMT6QJ"
         }
+    },
+    "bingx": {
+        "CAN Main": {
+            "qr": "bitget_1",
+            "referral": "NKE6GL"
+        },
+        "CAN Free": {
+            "qr": "bitget_2",
+            "referral": "HRB7WN"
+        },
+        "Turk Main": {
+            "qr": "bitget_3",
+            "referral": "SOV2XR"
+        },
+        "Turk Free": {
+            "qr": "bitget_4",
+            "referral": "WMT6QJ"
+        }
     }
 }
 
@@ -275,6 +293,10 @@ def random_referral(exchange):
     elif exchange == "mexc":
         char_set = range_char("A", "Z") + range_char("a", "z") + range_char("0", "9")
         return ''.join(random.sample(char_set, 5))
+
+    elif exchange == "bingx":
+        char_set = range_char("A", "Z")
+        return ''.join(random.sample(char_set, 6))
 
 
 def random_qr(exchange):

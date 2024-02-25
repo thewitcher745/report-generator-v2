@@ -183,6 +183,10 @@ class AutomaticSignalConv:
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_mexc, is_callback_query=True)
 
+        elif exchange == "bingx":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_bingx, is_callback_query=True)
+
         return AutomaticSignalConv.IMAGE
 
     @staticmethod
@@ -198,6 +202,8 @@ class AutomaticSignalConv:
                 keyboard = keyboards.bitget_setups
             elif context.user_data["exchange"] == "mexc":
                 keyboard = keyboards.mexc_setups
+            elif context.user_data["exchange"] == "bingx":
+                keyboard = keyboards.bingx_setups
 
             setup_message = "❓ Select a saved setup below, press custom to enter your own referral info, or random for a randomized QR/Referral:"
             await utilities.send_message(context, update, setup_message, keyboard=keyboard, is_callback_query=True)
