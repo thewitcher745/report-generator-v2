@@ -71,6 +71,9 @@ image_mexc = InlineKeyboardMarkup([
 image_bingx = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("BingX 1", callback_data="bingx_1"),
+    ],
+[
+        InlineKeyboardButton("BingX - Ashan 1", callback_data="bingx_2"),
     ]
 ])
 

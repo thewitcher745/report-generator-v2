@@ -519,5 +519,5 @@ class BingxReport(Report):
 
 
 if mode == "dev":
-    generate_image("bitget_3.png", "SOLUSDT Perpetual", "short", "3X", "+3.80%", "107.660", "106.295", "mexc_1", "YQOTZM", "test.png",
+    generate_image("bingx_2.png", "SOLUSDT Perpetual", "short", "3X", "+3.80%", "107.660", "106.295", "mexc_1", "YQOTZM", "test.png",
                    datetime.datetime.now(), "CANPREMIUM")
