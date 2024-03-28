@@ -160,13 +160,11 @@ class AutomaticSignalConv:
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
             if symbol_precision is None:
-                error_message = "❌ The selected exchange doesn't support the given symbol. Please try another exchange."
-                await utilities.send_message(context, update, error_message, keyboard=keyboards.exchange,
-                                             is_callback_query=True)
-                return AutomaticSignalConv.EXCHANGE
+                error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
+                await utilities.send_message(context, update, error_message, is_callback_query=True)
         except KeyError:
-            message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
-            await utilities.send_message(context, update, message, is_callback_query=True)
+            error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
+            await utilities.send_message(context, update, error_message, is_callback_query=True)
 
         media_group = [InputMediaPhoto(open(f"./background_images/{exchange}_images.png", 'rb'))]
         await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
@@ -417,17 +415,21 @@ If the information is incorrect, use /cancel to end the process.
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
-            if symbol_precision is None:
-                error_message = "❌ The selected exchange doesn't support the given symbol. Please try another exchange."
-                await utilities.send_message(context, update, error_message)
-                return ConversationHandler.END
+            if symbol_precision is not None:
+                message = f"The selected coin has a precision of {symbol_precision}. Will use the default signal precision."
+                await utilities.send_message(context, update, message, is_callback_query=True)
 
-            entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
-            targets = ["{:.{}f}".format(float(target), symbol_precision) for target in
-                       context.user_data["targets"]]
+                entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
+                targets = ["{:.{}f}".format(float(target), symbol_precision) for target in
+                           context.user_data["targets"]]
+            else:
+                error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
+                entry = str(context.user_data["entry"])
+                targets = [str(float(target)) for target in context.user_data["targets"]]
+
         except KeyError:
-            entry = context.user_data["entry"]
-            targets = context.user_data["targets"]
+            entry = str(context.user_data["entry"])
+            targets = [str(float(target)) for target in context.user_data["targets"]]
 
         qr = context.user_data["qr"]
         ref = context.user_data["ref"]

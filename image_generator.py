@@ -336,7 +336,7 @@ class MexcReport(Report):
     def draw_symbol(self, symbol):
         symbol_styling = self.styling["symbol"]
         xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
-        symbol = symbol.replace("USDT", " USDT")
+        symbol = symbol.replace("USDT", " USDT").replace("Perpetual", "Sürekli")
         self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
 
     def draw_details(self, signal_type, leverage, gen_date: datetime.datetime, username):
@@ -354,9 +354,23 @@ class MexcReport(Report):
         except KeyError:
             pass
 
+    def draw_roi(self, roi):
+        roi_styling = self.styling["roi"]
+
+        if self.image_id == "mexc_2":
+            roi = roi.replace("%", "").replace("+", "+%").replace(".", ",")
+
+        font = ImageFont.truetype(roi_styling.font, roi_styling.font_size)
+        xy = (roi_styling.position.x * self.image.size[0], roi_styling.position.y * self.image.size[1])
+
+        self.draw.text(xy, roi, font=font, fill=roi_styling.color)
+
     def draw_prices(self, entry, target):
         entry = "$" + entry
         target = "$" + target
+        if self.image_id == "mexc_2":
+            entry = entry.replace(".", ",")
+            target = target.replace(".", ",")
         self.draw_entry(entry)
         self.draw_target(target)
 
@@ -519,5 +533,5 @@ class BingxReport(Report):
 
 
 if mode == "dev":
-    generate_image("bingx_2.png", "SOLUSDT Perpetual", "short", "3X", "+3.80%", "107.660", "106.295", "mexc_1", "YQOTZM", "test.png",
+    generate_image("mexc_2.png", "AVAXUSDT Perpetual", "long", "40X", "+226.21%", "33.441", "35.37", "mexc_1", "YQOTZM", "test.png",
                    datetime.datetime.now(), "CANPREMIUM")

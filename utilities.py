@@ -232,22 +232,34 @@ saved_setups = {
         }
     },
     "mexc": {
-        "CAN Main": {
-            "qr": "bitget_1",
-            "referral": "NKE6GL"
+        "Cryptolovers": {
+            "qr": "binance_1",
+            "referral": "936746824"
         },
-        "CAN Free": {
-            "qr": "bitget_2",
-            "referral": "HRB7WN"
+        "CAN 1": {
+            "qr": "binance_2",
+            "referral": "632646513"
         },
-        "Turk Main": {
-            "qr": "bitget_3",
-            "referral": "SOV2XR"
+        "CAN 2": {
+            "qr": "binance_6",
+            "referral": "309763251"
         },
-        "Turk Free": {
-            "qr": "bitget_4",
-            "referral": "WMT6QJ"
-        }
+        "Mentally": {
+            "qr": "binance_4",
+            "referral": "963258139"
+        },
+        "Bbland": {
+            "qr": "binance_5",
+            "referral": "697429381"
+        },
+        "Paid": {
+            "qr": "binance_4",
+            "referral": "589264387"
+        },
+        "Turk": {
+            "qr": "binance_3",
+            "referral": "834236982"
+        },
     },
     "bingx": {
         "CAN Main": {

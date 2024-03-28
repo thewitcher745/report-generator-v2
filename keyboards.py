@@ -29,7 +29,7 @@ exchange = InlineKeyboardMarkup([
         InlineKeyboardButton("BitGet", callback_data="bitget"),
         InlineKeyboardButton("MEXC", callback_data="mexc"),
     ],
-[
+    [
         InlineKeyboardButton("BingX", callback_data="bingx"),
     ],
 ])
@@ -65,14 +65,16 @@ image_bitget = InlineKeyboardMarkup([
 image_mexc = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("MEXC 1", callback_data="mexc_1"),
+        InlineKeyboardButton("MEXC Turk", callback_data="mexc_2"),
     ]
 ])
 
 image_bingx = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("BingX 1", callback_data="bingx_1"),
+        InlineKeyboardButton("BingX 2", callback_data="bingx_3"),
     ],
-[
+    [
         InlineKeyboardButton("BingX - Ashan 1", callback_data="bingx_2"),
     ]
 ])
@@ -173,11 +175,18 @@ bitget_setups = InlineKeyboardMarkup([
 
 mexc_setups = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
-        InlineKeyboardButton("CAN Free", callback_data="CAN Free")],
+        InlineKeyboardButton("Cryptolovers", callback_data="Cryptolovers"),
+        InlineKeyboardButton("CAN 1", callback_data="CAN 1")],
     [
-        InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
-        InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
+        InlineKeyboardButton("CAN 2", callback_data="CAN 2"),
+        InlineKeyboardButton("Mentally", callback_data="Mentally"),
+    ],
+    [
+        InlineKeyboardButton("Bbland", callback_data="Bbland"),
+        InlineKeyboardButton("Paid", callback_data="Paid"),
+    ],
+    [
+        InlineKeyboardButton("Turk", callback_data="Turk"),
     ],
     [
         InlineKeyboardButton("Custom...", callback_data="custom"),
