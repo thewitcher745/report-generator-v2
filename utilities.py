@@ -52,7 +52,8 @@ def get_pair_precision(pair, exchange):
                     "binance": row[1],
                     "bybit": row[2],
                     "bitget": row[3],
-                    "mexc": row[4]
+                    "mexc": row[4],
+                    "bingx": row[5]
                 }
 
     if pair_precision_dict[pair][exchange]:

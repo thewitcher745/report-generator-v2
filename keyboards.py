@@ -71,11 +71,18 @@ image_mexc = InlineKeyboardMarkup([
 
 image_bingx = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("BingX 1", callback_data="bingx_1"),
-        InlineKeyboardButton("BingX 2", callback_data="bingx_3"),
+        InlineKeyboardButton("BingX ", callback_data="bingx_3"),
+        InlineKeyboardButton("BingX 1 - CAN", callback_data="bingx_1"),
     ],
     [
-        InlineKeyboardButton("BingX - Ashan 1", callback_data="bingx_2"),
+        InlineKeyboardButton("BingX 1 - Ashan", callback_data="bingx_2"),
+    ],
+    [
+        InlineKeyboardButton("BingX 2", callback_data="bingx_5"),
+        InlineKeyboardButton("BingX 2 - CAN", callback_data="bingx_4"),
+    ],
+    [
+        InlineKeyboardButton("BingX 2- Ashan", callback_data="bingx_6"),
     ]
 ])
 
