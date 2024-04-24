@@ -159,6 +159,7 @@ class AutomaticSignalConv:
         stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
+
             if symbol_precision is None:
                 error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
                 await utilities.send_message(context, update, error_message, is_callback_query=True)
@@ -416,7 +417,7 @@ If the information is incorrect, use /cancel to end the process.
         try:
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
             if symbol_precision is not None:
-                message = f"The selected coin has a precision of {symbol_precision}. Will use the default signal precision."
+                message = f"The selected coin has a precision of {symbol_precision}"
                 await utilities.send_message(context, update, message, is_callback_query=True)
 
                 entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
@@ -424,6 +425,7 @@ If the information is incorrect, use /cancel to end the process.
                            context.user_data["targets"]]
             else:
                 error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
+                await utilities.send_message(context, update, error_message, is_callback_query=True)
                 entry = str(context.user_data["entry"])
                 targets = [str(float(target)) for target in context.user_data["targets"]]
 
