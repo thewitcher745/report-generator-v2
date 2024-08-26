@@ -82,7 +82,10 @@ image_bingx = InlineKeyboardMarkup([
         InlineKeyboardButton("BingX 2 - CAN", callback_data="bingx_4"),
     ],
     [
-        InlineKeyboardButton("BingX 2- Ashan", callback_data="bingx_6"),
+        InlineKeyboardButton("BingX 2 - Ashan", callback_data="bingx_6"),
+    ],
+[
+        InlineKeyboardButton("BingX 3", callback_data="bingx_7"),
     ]
 ])
 
