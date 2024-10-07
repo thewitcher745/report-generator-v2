@@ -84,9 +84,12 @@ image_bingx = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("BingX 2 - Ashan", callback_data="bingx_6"),
     ],
-[
-        InlineKeyboardButton("BingX 3", callback_data="bingx_7"),
-    ]
+    [
+        InlineKeyboardButton("BingX 3", callback_data="bingx_9"),
+        InlineKeyboardButton("BingX 3 - CAN", callback_data="bingx_7"),
+
+    ],
+    [InlineKeyboardButton("BingX 3 - Ashan", callback_data="bingx_8"),]
 ])
 
 qr_binance = InlineKeyboardMarkup([
