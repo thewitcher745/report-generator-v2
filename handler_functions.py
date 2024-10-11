@@ -186,6 +186,10 @@ class AutomaticSignalConv:
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_bingx, is_callback_query=True)
 
+        elif exchange == "okx":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_okx, is_callback_query=True)
+
         return AutomaticSignalConv.IMAGE
 
     @staticmethod
@@ -203,6 +207,8 @@ class AutomaticSignalConv:
                 keyboard = keyboards.mexc_setups
             elif context.user_data["exchange"] == "bingx":
                 keyboard = keyboards.bingx_setups
+            elif context.user_data["exchange"] == "okx":
+                keyboard = keyboards.okx_setups
 
             setup_message = "❓ Select a saved setup below, press custom to enter your own referral info, or random for a randomized QR/Referral:"
             await utilities.send_message(context, update, setup_message, keyboard=keyboard, is_callback_query=True)
@@ -223,8 +229,11 @@ class AutomaticSignalConv:
             keyboard = keyboards.qr_bybit
             if exchange == "binance":
                 keyboard = keyboards.qr_binance
-            elif exchange == "binance":
+            elif exchange == "bitget":
                 keyboard = keyboards.qr_bitget
+            elif exchange == "okx":
+                keyboard = keyboards.qr_okx
+
             await utilities.send_message(context, update, qr_message, keyboard=keyboard, is_callback_query=True)
             return AutomaticSignalConv.QR
 
@@ -361,6 +370,8 @@ If the information is incorrect, use /cancel to end the process.
             keyboard = keyboards.qr_binance
         elif context.user_data["exchange"] == "bitget":
             keyboard = keyboards.qr_bitget
+        elif context.user_data["exchange"] == "okx":
+            keyboard = keyboards.qr_okx
 
         qr_message = "❓ Select a QR code from below: "
         await utilities.send_message(context, update, qr_message, keyboard=keyboard)

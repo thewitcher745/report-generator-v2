@@ -71,7 +71,7 @@ image_mexc = InlineKeyboardMarkup([
 
 image_bingx = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("BingX ", callback_data="bingx_3"),
+        InlineKeyboardButton("BingX 1", callback_data="bingx_3"),
         InlineKeyboardButton("BingX 1 - CAN", callback_data="bingx_1"),
     ],
     [
@@ -89,7 +89,11 @@ image_bingx = InlineKeyboardMarkup([
         InlineKeyboardButton("BingX 3 - CAN", callback_data="bingx_7"),
 
     ],
-    [InlineKeyboardButton("BingX 3 - Ashan", callback_data="bingx_8"),]
+    [InlineKeyboardButton("BingX 3 - Ashan", callback_data="bingx_8"), ]
+])
+
+image_okx = InlineKeyboardMarkup([
+    [InlineKeyboardButton("OKX 1", callback_data="okx_1")]
 ])
 
 qr_binance = InlineKeyboardMarkup([
@@ -135,6 +139,12 @@ qr_mexc = InlineKeyboardMarkup([
         InlineKeyboardButton("QR 4", callback_data="mexc_4"),
         InlineKeyboardButton("QR 5", callback_data="mexc_5"),
     ],
+])
+
+qr_okx = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("QR 1", callback_data="okx_1"),
+    ]
 ])
 
 binance_setups = InlineKeyboardMarkup([
@@ -208,6 +218,15 @@ mexc_setups = InlineKeyboardMarkup([
 ])
 
 bingx_setups = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("CAN Main", callback_data="CAN Main")],
+    [
+        InlineKeyboardButton("Custom...", callback_data="custom"),
+        InlineKeyboardButton("Random...", callback_data="random"),
+    ],
+])
+
+okx_setups = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("CAN Main", callback_data="CAN Main")],
     [

@@ -279,6 +279,10 @@ saved_setups = {
             "qr": "bitget_4",
             "referral": "WMT6QJ"
         }
+    },
+    "okx": {
+        "qr": "okx_1",
+        "referral": "90783830"
     }
 }
 
@@ -310,6 +314,10 @@ def random_referral(exchange):
     elif exchange == "bingx":
         char_set = range_char("A", "Z")
         return ''.join(random.sample(char_set, 6))
+
+    elif exchange == "okx":
+        char_set = range_char("0", "9")
+        return ''.join(random.sample(char_set, 8))
 
 
 def random_qr(exchange):
