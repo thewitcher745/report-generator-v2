@@ -83,14 +83,27 @@ styling_dict = {
         "referral": ElementStyling(position=Position(0.29, 0.88), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=50, color="black"),
         "qr_code": ElementStyling(position=Position(0.842, 0.793), size=150)
     },
-"bybit_4": {
+    "bybit_4": {
         "symbol": ElementStyling(position=Position(0.062, 0.17), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=60, color=(255, 255, 255)),
         "signal_type": ElementStyling(position=Position(0.116, 0.18), font="./fonts/IBMPlexSans-Regular.TTF", font_size=30, margin_x=8, margin_y=6,
                                       margin_y_mult=0.5, spacing=25, rect_radius=5, short_color=(220, 66, 90), long_color=(33, 182, 114),
                                       short_box_color=(64, 38, 39),
                                       # long_box_color=(34, 51, 45)),
-    long_box_color = (47, 72, 51)),
-"roi": ElementStyling(position=Position(0.065, 0.3), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=95, color=(33, 182, 114)),
+                                      long_box_color=(47, 72, 51)),
+        "roi": ElementStyling(position=Position(0.065, 0.3), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=95, color=(33, 182, 114)),
+        "entry": ElementStyling(position=Position(0.063, 0.468), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=45, color="white"),
+        "target": ElementStyling(position=Position(0.063, 0.57), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=45, color="white"),
+        "referral": ElementStyling(position=Position(0.425, 0.919), font="./fonts/IBMPlexSans-Medium.ttf", font_size=50, color="black"),
+        "qr_code": ElementStyling(position=Position(722 / 930, 1084 / 1280), size=161)
+    },
+    "bybit_5": {
+        "symbol": ElementStyling(position=Position(0.062, 0.17), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=60, color=(255, 255, 255)),
+        "signal_type": ElementStyling(position=Position(0.116, 0.18), font="./fonts/IBMPlexSans-Regular.TTF", font_size=30, margin_x=8, margin_y=6,
+                                      margin_y_mult=0.5, spacing=25, rect_radius=5, short_color=(220, 66, 90), long_color=(33, 182, 114),
+                                      short_box_color=(64, 38, 39),
+                                      # long_box_color=(34, 51, 45)),
+                                      long_box_color=(47, 72, 51)),
+        "roi": ElementStyling(position=Position(0.065, 0.3), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=95, color=(33, 182, 114)),
         "entry": ElementStyling(position=Position(0.063, 0.468), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=45, color="white"),
         "target": ElementStyling(position=Position(0.063, 0.57), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=45, color="white"),
         "referral": ElementStyling(position=Position(0.425, 0.919), font="./fonts/IBMPlexSans-Medium.ttf", font_size=50, color="black"),

@@ -66,7 +66,7 @@ class NormalReportConv:
 
 
 class AutomaticSignalConv:
-    EXCHANGE, SAVED_SETUP, USERNAME, IMAGE, SIGNAL, TARGET, QR, REF = range(8)
+    EXCHANGE, SAVED_SETUP, USERNAME, IMAGE, SIGNAL, TARGET, QR, REF, MARGIN = range(9)
 
     @staticmethod
     async def start(update, context):
@@ -243,7 +243,7 @@ class AutomaticSignalConv:
             context.user_data["qr"] = utilities.random_qr(context.user_data["exchange"])
 
             random_setup_message = f"Random setup selected: \nReferral code: {context.user_data['qr']}\n{context.user_data['qr']}"
-            if not context.user_data["image_id"] in ["bitget_2", "bitget_4"]:
+            if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5"]:
                 await utilities.send_message(context, update, random_setup_message, is_callback_query=True)
                 await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
 
@@ -253,6 +253,13 @@ class AutomaticSignalConv:
                     await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
                 await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
                                              is_callback_query=True)
+
+            elif context.user_data["image_id"] == "bybit_5":
+                # Since bybit_5 prints the margin instead of the ROI
+                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...", is_callback_query=True)
+
+                return AutomaticSignalConv.MARGIN
+
             else:
                 await utilities.send_message(context, update, random_setup_message, is_callback_query=True)
                 await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...",
@@ -266,7 +273,7 @@ class AutomaticSignalConv:
             context.user_data["qr"] = utilities.saved_setups[exchange][setup]["qr"]
             context.user_data["ref"] = utilities.saved_setups[exchange][setup]["referral"]
 
-            if not context.user_data["image_id"] in ["bitget_2", "bitget_4"]:
+            if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5"]:
                 await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
 
                 media_group = await AutomaticSignalConv.generate_images(context, update)
@@ -275,6 +282,13 @@ class AutomaticSignalConv:
                     await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
                 await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
                                              is_callback_query=True)
+
+            elif context.user_data["image_id"] == "bybit_5":
+                # Since bybit_5 prints the margin instead of the ROI
+                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...", is_callback_query=True)
+
+                return AutomaticSignalConv.MARGIN
+
             else:
                 await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...",
                                              is_callback_query=True)
@@ -391,7 +405,7 @@ If the information is incorrect, use /cancel to end the process.
         context.user_data["ref"] = update.message.text
 
         # Skip to username for images that need a username
-        if not context.user_data["image_id"] in ["bitget_2", "bitget_4"]:
+        if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5"]:
             await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
 
             media_group = await AutomaticSignalConv.generate_images(context, update)
@@ -402,10 +416,32 @@ If the information is incorrect, use /cancel to end the process.
             await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
 
             return ConversationHandler.END
+
+        elif context.user_data["image_id"] == "bybit_5":
+            # Since bybit_5 prints the margin instead of the ROI
+            await utilities.send_message(context, update, "❓ Referral set. Type a margin as the image needs a margin...", is_callback_query=True)
+
+            return AutomaticSignalConv.MARGIN
+
         else:
             await utilities.send_message(context, update, "❓ Referral set. Type a username as the image needs a username...")
 
             return AutomaticSignalConv.USERNAME
+
+    @staticmethod
+    async def margin(update, context):
+        context.user_data["margin"] = update.message.text
+
+        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
+
+        media_group = await AutomaticSignalConv.generate_images(context, update)
+
+        for media in media_group:
+            await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
+
+        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+
+        return ConversationHandler.END
 
     @staticmethod
     async def generate_images(context, update):
@@ -456,6 +492,10 @@ If the information is incorrect, use /cancel to end the process.
 
         media_group = []
         used_money = 10
+
+        if context.user_data["image_id"] == "bybit_5":
+            used_money = float(context.user_data["margin"])
+
         qty = used_money * float(context.user_data["leverage"]) / float(context.user_data["entry"])
         for target_id, target in enumerate(targets):
             if signal_type.lower() == "long":
@@ -468,6 +508,10 @@ If the information is incorrect, use /cancel to end the process.
             net_profit = gain - loss
             roi = net_profit / used_money * 100
             roi = f"+{str(round(roi, 2))}%"
+
+            if context.user_data["image_id"] == "bybit_5":
+                roi = f"{str(round(net_profit, 2))}"
+
             image_generator.generate_image(image_name, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry),
                                            utilities.separate_number(target), qr, ref,
                                            f"{image_id}_{target_id}", gen_date=datetime.datetime.now(), username=username)

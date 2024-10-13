@@ -106,6 +106,7 @@ class Report:
             self.draw.text(xy, target, font=font, fill=target_styling.color)
 
     def draw_roi(self, roi):
+        print(roi)
         roi_styling = self.styling["roi"]
         font = ImageFont.truetype(roi_styling.font, roi_styling.font_size)
         xy = (roi_styling.position.x * self.image.size[0], roi_styling.position.y * self.image.size[1])
@@ -601,5 +602,5 @@ class OkxReport(Report):
 
 
 if mode == "dev":
-    generate_image("bybit_4.png", "XRPUSDT Perpetual", "long", "10X", "+0.16%", "0.5913", "0.5914", "okx_1", "3YML5X", "test.png",
+    generate_image("bybit_5.png", "XRPUSDT Perpetual", "long", "10X", "+0.16%", "0.5913", "0.5914", "okx_1", "3YML5X", "test.png",
                    datetime.datetime.now(), "CANPREMIUM")

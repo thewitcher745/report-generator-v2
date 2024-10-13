@@ -49,6 +49,9 @@ automatic_report_handler = ConversationHandler(
         handlers.AutomaticSignalConv.REF: [
             MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.ref)
         ],
+        handlers.AutomaticSignalConv.MARGIN: [
+            MessageHandler(filters.TEXT, handlers.AutomaticSignalConv.margin)
+        ],
         # handlers.AutomaticSignalConv.SELECT_TARGET: [
         #     MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.AutomaticSignalConv.select_target),
         #     CommandHandler('cancel', handlers.cancel)
