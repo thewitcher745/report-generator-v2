@@ -50,6 +50,7 @@ image_bybit = InlineKeyboardMarkup([
         InlineKeyboardButton("ByBit 1", callback_data="bybit_1"),
         InlineKeyboardButton("ByBit 2", callback_data="bybit_2"),
         InlineKeyboardButton("ByBit 3", callback_data="bybit_3"),
+InlineKeyboardButton("ByBit 4", callback_data="bybit_4"),
     ],
 ])
 
