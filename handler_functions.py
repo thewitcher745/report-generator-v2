@@ -429,14 +429,21 @@ If the information is incorrect, use /cancel to end the process.
             symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
             if symbol_precision is not None:
                 message = f"The selected coin has a precision of {symbol_precision}"
-                await utilities.send_message(context, update, message, is_callback_query=True)
+                try:
+                    await utilities.send_message(context, update, message, is_callback_query=True)
+                except:
+                    await utilities.send_message(context, update, message, is_callback_query=False)
 
                 entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
                 targets = ["{:.{}f}".format(float(target), symbol_precision) for target in
                            context.user_data["targets"]]
             else:
                 error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
-                await utilities.send_message(context, update, error_message, is_callback_query=True)
+                try:
+                    await utilities.send_message(context, update, error_message, is_callback_query=True)
+                except:
+                    await utilities.send_message(context, update, error_message, is_callback_query=False)
+
                 entry = str(context.user_data["entry"])
                 targets = [str(float(target)) for target in context.user_data["targets"]]
 

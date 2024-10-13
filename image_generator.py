@@ -215,8 +215,8 @@ class BybitReport(Report):
             im_rgba.putalpha(img_alpha)
 
             img_b.paste(img_f, xy, mask=im_rgba)
-
-        text = f"{signal_type.capitalize()} {leverage}"
+        leverage = leverage.lower().replace("x", "")
+        text = f"{signal_type.capitalize()} {f'{float(leverage)}'}X"
 
         signal_type_styling = self.styling["signal_type"]
         symbol_styling = self.styling["symbol"]
@@ -239,7 +239,12 @@ class BybitReport(Report):
 
         text_color = signal_type_styling.short_color if signal_type.lower() == "short" else signal_type_styling.long_color
         box_color = signal_type_styling.short_box_color if signal_type.lower() == "short" else signal_type_styling.long_box_color
-        draw_transparent_rrect(box_xy, (box_width, box_height), radius, box_color, 190, self.image)
+        alpha = 190
+
+        if self.image_id == "bybit_4":
+            alpha = 100
+
+        draw_transparent_rrect(box_xy, (box_width, box_height), radius, box_color, alpha, self.image)
         self.draw.text(text_xy, text,
                        font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size),
                        fill=text_color)
@@ -339,7 +344,10 @@ class MexcReport(Report):
     def draw_symbol(self, symbol):
         symbol_styling = self.styling["symbol"]
         xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
-        symbol = symbol.replace("USDT", " USDT").replace("Perpetual", "Sürekli")
+
+        if self.image_id == "mexc_2" or self.image_id == "mexc_3":
+            symbol = symbol.replace("USDT", " USDT").replace("Perpetual", "Sürekli")
+
         self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
 
     def draw_details(self, signal_type, leverage, gen_date: datetime.datetime, username):
@@ -360,7 +368,7 @@ class MexcReport(Report):
     def draw_roi(self, roi):
         roi_styling = self.styling["roi"]
 
-        if self.image_id == "mexc_2":
+        if self.image_id == "mexc_2" or self.image_id == "mexc_3":
             roi = roi.replace("%", "").replace("+", "+%").replace(".", ",")
 
         font = ImageFont.truetype(roi_styling.font, roi_styling.font_size)
@@ -389,6 +397,10 @@ class MexcReport(Report):
         signal_type_styling = self.styling["signal_type"]
         leverage = leverage.upper()
         signal_type = signal_type.capitalize()
+
+        if self.image_id == "mexc_3":
+            signal_type += " Kapat"
+
         font = ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size)
 
         # MEXC_1
@@ -566,7 +578,7 @@ class OkxReport(Report):
     def draw_referral_and_qr(self, referral, qr):
         try:
             if self.styling["draw_qr_referral"]:
-                self.draw_qr(qr)
+                # self.draw_qr(qr)
                 self.draw_referral_code(referral)
         except KeyError:
             pass
@@ -589,5 +601,5 @@ class OkxReport(Report):
 
 
 if mode == "dev":
-    generate_image("okx_1.png", "LINKUSDT Perpetual", "long", "50X", "+473.48%", "10.248", "11.219", "okx_1", "90783830", "test.png",
+    generate_image("bybit_4.png", "XRPUSDT Perpetual", "long", "10X", "+0.16%", "0.5913", "0.5914", "okx_1", "3YML5X", "test.png",
                    datetime.datetime.now(), "CANPREMIUM")

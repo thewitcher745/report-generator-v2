@@ -281,8 +281,10 @@ saved_setups = {
         }
     },
     "okx": {
-        "qr": "okx_1",
-        "referral": "90783830"
+        "CAN Main": {
+            "qr": "okx_1",
+            "referral": "90783830"
+        }
     }
 }
 

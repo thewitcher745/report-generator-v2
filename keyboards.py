@@ -31,6 +31,7 @@ exchange = InlineKeyboardMarkup([
     ],
     [
         InlineKeyboardButton("BingX", callback_data="bingx"),
+        InlineKeyboardButton("OKX", callback_data="okx"),
     ],
 ])
 
@@ -66,6 +67,7 @@ image_mexc = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("MEXC 1", callback_data="mexc_1"),
         InlineKeyboardButton("MEXC Turk", callback_data="mexc_2"),
+        InlineKeyboardButton("MEXC Turk - Kapat", callback_data="mexc_3"),
     ]
 ])
 
