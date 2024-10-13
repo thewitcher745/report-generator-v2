@@ -510,7 +510,7 @@ If the information is incorrect, use /cancel to end the process.
             roi = f"+{str(round(roi, 2))}%"
 
             if context.user_data["image_id"] == "bybit_5":
-                roi = f"{str(round(net_profit, 2))}"
+                roi = f"+{str(round(net_profit, 2))}"
 
             image_generator.generate_image(image_name, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry),
                                            utilities.separate_number(target), qr, ref,
