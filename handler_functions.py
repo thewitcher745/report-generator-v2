@@ -190,6 +190,10 @@ class AutomaticSignalConv:
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_okx, is_callback_query=True)
 
+        elif exchange == "lbank":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_lbank, is_callback_query=True)
+
         return AutomaticSignalConv.IMAGE
 
     @staticmethod

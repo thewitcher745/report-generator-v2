@@ -33,6 +33,9 @@ exchange = InlineKeyboardMarkup([
         InlineKeyboardButton("BingX", callback_data="bingx"),
         InlineKeyboardButton("OKX", callback_data="okx"),
     ],
+[
+        InlineKeyboardButton("LBANK", callback_data="lbank"),
+    ],
 ])
 
 image_binance = InlineKeyboardMarkup([
@@ -102,6 +105,10 @@ image_okx = InlineKeyboardMarkup([
     [InlineKeyboardButton("OKX 1", callback_data="okx_1")]
 ])
 
+image_lbank = InlineKeyboardMarkup([
+    [InlineKeyboardButton("LBANK 1", callback_data="lbank_1")]
+])
+
 qr_binance = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("QR 1", callback_data="binance_1"),
@@ -145,6 +152,12 @@ qr_mexc = InlineKeyboardMarkup([
 qr_okx = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("QR 1", callback_data="okx_1"),
+    ]
+])
+
+qr_okx = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("QR 1", callback_data="lbank_1"),
     ]
 ])
 
@@ -228,6 +241,15 @@ bingx_setups = InlineKeyboardMarkup([
 ])
 
 okx_setups = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("CAN Main", callback_data="CAN Main")],
+    [
+        InlineKeyboardButton("Custom...", callback_data="custom"),
+        InlineKeyboardButton("Random...", callback_data="random"),
+    ],
+])
+
+lbank_setups = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("CAN Main", callback_data="CAN Main")],
     [

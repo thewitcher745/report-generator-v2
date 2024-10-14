@@ -285,6 +285,12 @@ saved_setups = {
             "qr": "okx_1",
             "referral": "90783830"
         }
+    },
+    "lbank": {
+        "CAN Main": {
+            "qr": "lbank_1",
+            "referral": "3WZ8B"
+        }
     }
 }
 
@@ -320,6 +326,10 @@ def random_referral(exchange):
     elif exchange == "okx":
         char_set = range_char("0", "9")
         return ''.join(random.sample(char_set, 8))
+
+    elif exchange == "lbank":
+        char_set = range_char("A", "Z") + range_char("0", "9")
+        return ''.join(random.sample(char_set, 5))
 
 
 def random_qr(exchange):

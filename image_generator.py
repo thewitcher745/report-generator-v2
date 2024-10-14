@@ -9,6 +9,7 @@ from image_gen_classes.BitgetReport import BitgetReport
 from image_gen_classes.BybitReport import BybitReport
 from image_gen_classes.MexcReport import MexcReport
 from image_gen_classes.OkxReport import OkxReport
+from image_gen_classes.LbankReport import LbankReport
 
 mode = dotenv_values(".env.secret")["MODE"]
 
@@ -38,6 +39,9 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
     elif image_id.startswith("okx"):
         report = OkxReport(image_id, styling, img, draw)
 
+    elif image_id.startswith("lbank"):
+        report = LbankReport(image_id, styling, img, draw)
+
     report.draw_symbol(symbol)
     report.draw_details(signal_type, leverage, gen_date, username)
     report.draw_roi(roi)
@@ -50,5 +54,5 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
 
 
 if mode == "dev":
-    generate_image("okx_1.png", "XRPUSDT Perpetual", "long", "10X", "+0.16%", "0.5913", "0.5914", "okx_1", "3YML5X", "test.png",
+    generate_image("lbank_1.png", "MEWUSDT Perpetual", "long", "3X", "+53.11%", "0.005840", "0.006873", "okx_1", "3WZ8B", "test.png",
                    datetime.datetime.now(), "CANPREMIUM")
