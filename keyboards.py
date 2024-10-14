@@ -117,11 +117,6 @@ qr_binance = InlineKeyboardMarkup([
 qr_bybit = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("QR 1", callback_data="bybit_1"),
-        InlineKeyboardButton("QR 2", callback_data="bybit_2"),
-        InlineKeyboardButton("QR 3", callback_data="bybit_3")],
-    [
-        InlineKeyboardButton("QR 4", callback_data="bybit_4"),
-        InlineKeyboardButton("QR 5", callback_data="bybit_5"),
     ],
 ])
 

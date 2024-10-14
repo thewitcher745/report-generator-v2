@@ -199,18 +199,18 @@ saved_setups = {
     "bybit": {
         "CAN Main": {
             "qr": "bybit_1",
-            "referral": "NKE6GL"
+            "referral": "3YML5X"
         },
         "CAN Free": {
-            "qr": "bybit_2",
+            "qr": "bybit_1",
             "referral": "HRB7WN"
         },
         "Turk Main": {
-            "qr": "bybit_3",
+            "qr": "bybit_1",
             "referral": "SOV2XR"
         },
         "Turk Free": {
-            "qr": "bybit_4",
+            "qr": "bybit_1",
             "referral": "WMT6QJ"
         }
     },
