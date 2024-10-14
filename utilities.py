@@ -326,7 +326,6 @@ def random_qr(exchange):
     qrs = []
     for filename in os.listdir("./qr/"):
         if filename.startswith(exchange):
-            print(filename)
             qrs.append(filename.replace(".png", ""))
 
     return random.sample(qrs, 1)[0]
