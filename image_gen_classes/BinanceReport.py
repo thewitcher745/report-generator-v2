@@ -1,8 +1,10 @@
 from PIL import ImageFont
+import datetime
 
 from image_gen_classes.Report import Report
 from styling_dict import Position
-from image_gen_classes.utils import draw_centered_text
+from image_gen_classes.utils import draw_centered_text, two_char_long
+
 
 class BinanceReport(Report):
     def draw_symbol(self, symbol):
@@ -10,14 +12,47 @@ class BinanceReport(Report):
         xy = (symbol_styling.position.x * self.image.size[0], symbol_styling.position.y * self.image.size[1])
         self.draw.text(xy, symbol, font=ImageFont.truetype(symbol_styling.font, symbol_styling.font_size), fill=symbol_styling.color)
 
-    def draw_details(self, signal_type, leverage, datetime, username):
-        self.draw_vertical_lines()
-        self.draw_leverage(leverage)
+    def draw_roi(self, roi):
+        # Modify the input argument as needed
+        if self.image_id == "binance_4":
+            altered_roi = roi.replace(".", ",").replace("%", "")
+            # Call the parent class's method with the altered argument
+            super().draw_roi(altered_roi)
+
+        else:
+            super().draw_roi(roi)
+
+    def draw_details(self, signal_type, leverage, gen_date, username):
+        if self.image_id != "binance_4":
+            self.draw_vertical_lines()
+            self.draw_leverage(leverage)
+
+        try:
+            if self.styling["draw_datetime"]:
+                self.draw_datetime(gen_date)
+        except KeyError:
+            pass
+
         self.draw_signal_type(signal_type)
 
+    def draw_datetime(self, gen_date: datetime.datetime):
+        datetime_styling = self.styling["gen_date"]
+
+        font = ImageFont.truetype(datetime_styling.font, datetime_styling.font_size)
+        xy = (datetime_styling.position.x * self.image.size[0], datetime_styling.position.y * self.image.size[1])
+        datetime_string = f"Shared on {gen_date.year}-{two_char_long(gen_date.month)}-{two_char_long(gen_date.day)} at {two_char_long(gen_date.hour)}:{two_char_long(gen_date.minute)} (UTC-4)"
+
+        self.draw.text(xy, datetime_string, font=font, fill=datetime_styling.color)
+
     def draw_prices(self, entry, target):
-        self.draw_entry(entry, right_align=True)
-        self.draw_target(target, right_align=True)
+        if self.image_id == "binance_4":
+            entry = entry.replace(".", ",")
+            target = target.replace(".", ",")
+            self.draw_entry(entry)
+            self.draw_target(target)
+        else:
+            self.draw_entry(entry, right_align=True)
+            self.draw_target(target, right_align=True)
 
     def draw_referral_and_qr(self, referral, qr):
         self.draw_referral_code(referral)
@@ -50,7 +85,9 @@ class BinanceReport(Report):
     def draw_signal_type(self, signal_type):
         signal_type = signal_type.capitalize()
         signal_type_styling = self.styling["signal_type"]
-        color = "#b6536c" if signal_type.lower() == "short" else "#438A70"
+
+        color = signal_type_styling.short_color if signal_type.lower() == "short" else signal_type_styling.long_color
+
         xy = (signal_type_styling.position.x * self.image.size[0], signal_type_styling.position.y * self.image.size[1])
 
         self.draw.text(xy, signal_type, font=ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size), fill=color)
