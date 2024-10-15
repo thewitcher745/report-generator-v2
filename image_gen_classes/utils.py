@@ -10,11 +10,18 @@ def get_text_height(text, font):
 
 
 # This function draws a text based on a horizontal center and a Y position
-def draw_centered_text(text, position, styling, font, draw_object):
+def draw_centered_text(text, position, styling_or_color, font, draw_object):
     text_width = get_text_width(text, font)
     position = (position[0] - text_width / 2, position[1])
 
-    draw_object.text(position, text, font=font, fill=styling.color)
+    try:
+        color = styling_or_color.color
+    except AttributeError:
+        color = styling_or_color
+
+    print(color)
+
+    draw_object.text(position, text, font=font, fill=color)
 
 
 # This function draws a right aligned text based on top right position

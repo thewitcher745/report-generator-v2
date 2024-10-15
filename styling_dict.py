@@ -51,15 +51,18 @@ styling_dict = {
         "qr_code": ElementStyling(position=Position(118 / 980, 460 / 619), size=94)
     },
     "binance_4": {
-        "symbol": ElementStyling(position=Position(0.247, 0.4085), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=43, color="black"),
-        "signal_type": ElementStyling(position=Position(0.447, 0.456), font="./fonts/IBMPlexSans-Regular.TTF", font_size=34,
+        "vertical_line_1": ElementStyling(position=Position(0.2328, 0.2885)),
+        "vertical_line_2": ElementStyling(position=Position(0.34, 0.2885)),
+        "symbol": ElementStyling(position=Position(0.5, 0.4085), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=43, color="black"),
+        "signal_type": ElementStyling(position=Position(0.5, 0.456), font="./fonts/IBMPlexSans-Regular.TTF", font_size=34,
                                       short_color=(217, 83, 116), long_color=(52, 183, 133)),
-        "roi": ElementStyling(position=Position(0.252, 0.512), font="./fonts/BinancePlex.otf", font_size=110, color=(46, 189, 136)),
-        "entry": ElementStyling(position=Position(0.213, 0.684), font="./fonts/DIN 2014 Demi.ttf", font_size=36, color="black"),
-        "target": ElementStyling(position=Position(0.637, 0.684), font="./fonts/DIN 2014 Demi.ttf", font_size=36, color="black"),
+        "leverage": ElementStyling(position=Position(0.2734, 0.287), font="./fonts/BAHNSCHRIFT 1.TTF", font_size=30, color=(255, 255, 255)),
+        "roi": ElementStyling(position=Position(0.5, 0.512), font="./fonts/BinancePlex.otf", font_size=110, color=(46, 189, 136)),
+        "entry": ElementStyling(position=Position(0.29, 0.684), font="./fonts/DIN 2014 Demi.ttf", font_size=36, color="black"),
+        "target": ElementStyling(position=Position(0.7, 0.684), font="./fonts/DIN 2014 Demi.ttf", font_size=36, color="black"),
         "referral": ElementStyling(position=Position(0.33, 0.946), font="./fonts/DIN Next CYR Medium.ttf", font_size=30, color="black"),
         "qr_code": ElementStyling(position=Position(0.76, 0.85), size=153),
-        "gen_date": ElementStyling(position=Position(0.1785, 0.768), font="./fonts/DINNextCYR-Regular.ttf", font_size=30, color="#999999"),
+        "gen_date": ElementStyling(position=Position(0.5, 0.768), font="./fonts/DINNextCYR-Regular.ttf", font_size=30, color="#999999"),
         "draw_datetime": True
     },
     "bybit_1": {

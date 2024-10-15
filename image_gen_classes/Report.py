@@ -10,23 +10,31 @@ class Report:
         self.image = img
         self.draw = draw_object
 
-    def draw_entry(self, entry, right_align=False):
+    def draw_entry(self, entry, right_align=False, center_align=False):
         entry_styling = self.styling["entry"]
         font = ImageFont.truetype(entry_styling.font, entry_styling.font_size)
         xy = (entry_styling.position.x * self.image.size[0], entry_styling.position.y * self.image.size[1])
 
         if right_align:
             draw_right_aligned_text(entry, xy, entry_styling, font, self.draw)
+
+        elif center_align:
+            draw_centered_text(entry, xy, entry_styling, font, self.draw)
+
         else:
             self.draw.text(xy, entry, font=font, fill=entry_styling.color)
 
-    def draw_target(self, target, right_align=False):
+    def draw_target(self, target, right_align=False, center_align=False):
         target_styling = self.styling["target"]
         font = ImageFont.truetype(target_styling.font, target_styling.font_size)
         xy = (target_styling.position.x * self.image.size[0], target_styling.position.y * self.image.size[1])
 
         if right_align:
             draw_right_aligned_text(target, xy, target_styling, font, self.draw)
+
+        elif center_align:
+            draw_centered_text(target, xy, target_styling, font, self.draw)
+
         else:
             self.draw.text(xy, target, font=font, fill=target_styling.color)
 
