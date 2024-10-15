@@ -45,6 +45,7 @@ image_binance = InlineKeyboardMarkup([
     ],
     [
         InlineKeyboardButton("Binance 3", callback_data="binance_3"),
+        InlineKeyboardButton("Binance 4", callback_data="binance_4"),
     ]
 ])
 
