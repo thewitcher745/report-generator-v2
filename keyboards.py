@@ -107,7 +107,8 @@ image_okx = InlineKeyboardMarkup([
 ])
 
 image_lbank = InlineKeyboardMarkup([
-    [InlineKeyboardButton("LBANK 1", callback_data="lbank_1")]
+    [InlineKeyboardButton("LBANK 1", callback_data="lbank_1"),
+     InlineKeyboardButton("LBANK 2", callback_data="lbank_2")]
 ])
 
 qr_binance = InlineKeyboardMarkup([
