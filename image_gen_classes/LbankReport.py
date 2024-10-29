@@ -84,7 +84,7 @@ class LbankReport(Report):
 
         leverage_text = f" | {leverage}"
         leverage_color = leverage_styling.color
-        leverage_xy = (signal_type_xy[0] + get_text_width(signal_type_text, signal_type_font), signal_type_xy[1] + 2)
+        leverage_xy = (signal_type_xy[0] + get_text_width(signal_type_text, signal_type_font), signal_type_xy[1])
 
         self.draw.text(leverage_xy, leverage_text, font=signal_type_font, fill=leverage_color)
 
