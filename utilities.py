@@ -289,8 +289,28 @@ saved_setups = {
     "lbank": {
         "CAN Main": {
             "qr": "lbank_1",
-            "referral": "3WZ8B"
-        }
+            "referral": "3XY7G"
+        },
+        "CAN Free": {
+            "qr": "lbank_1",
+            "referral": "2FR9W"
+        },
+        "Turk Main": {
+            "qr": "lbank_1",
+            "referral": "3BK6Q"
+        },
+        "Turk Free": {
+            "qr": "lbank_1",
+            "referral": "3CZ8M"
+        },
+        "Board Main": {
+            "qr": "lbank_1",
+            "referral": "2SH6L"
+        },
+        "Board Free": {
+            "qr": "lbank_1",
+            "referral": "3CL4A"
+        },
     }
 }
 
