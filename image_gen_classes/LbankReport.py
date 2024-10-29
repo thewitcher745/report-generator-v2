@@ -73,8 +73,11 @@ class LbankReport(Report):
         signal_type_font = ImageFont.truetype(signal_type_styling.font, signal_type_styling.font_size)
 
         signal_type_text = f"Close {signal_type} "
-        # OKX_1
-        signal_type_color = signal_type_styling.color
+
+        if self.image_id == "lbank_1":
+            signal_type_color = signal_type_styling.color
+        else:
+            signal_type_color = signal_type_styling.short_color if signal_type == "short" else signal_type_styling.long_color
         signal_type_xy = (signal_type_styling.position.x * self.image.size[0], signal_type_styling.position.y * self.image.size[1])
 
         self.draw.text(signal_type_xy, signal_type_text, font=signal_type_font, fill=signal_type_color)

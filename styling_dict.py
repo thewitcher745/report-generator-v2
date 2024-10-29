@@ -410,4 +410,23 @@ styling_dict = {
         "draw_datetime": True,
         "draw_qr_referral": True
     },
+    "lbank_2": {
+        "symbol": ElementStyling(position=Position(0.069, 0.163), font="./fonts/Yantramanav-Black.ttf", font_size=30,
+                                 color="black"),
+        "futures_rrect": ElementStyling(x_spacing=20, y_spacing=7, rect_radius=15, padding_x=9, padding_y=2, box_color=(237, 238, 240),
+                                        text_color="black", font="./fonts/Yantramanav-Regular.ttf", box_height=30, box_width=80, font_size=20),
+        "signal_type": ElementStyling(position=Position(0.07, 0.207), font="./fonts/Yantramanav-Regular.ttf",
+                                      font_size=30, short_color=(187, 92, 112), long_color=(35, 181, 132)),
+        "leverage": ElementStyling(color="black"),
+        "roi": ElementStyling(position=Position(0.07, 0.355), font="./fonts/Yantramanav-Black.ttf", font_size=85,
+                              color=(35, 181, 132)),
+
+        "entry": ElementStyling(position=Position(0.07, 0.585), font="./fonts/Yantramanav-Regular.ttf", font_size=30, color="black"),
+        "target": ElementStyling(position=Position(0.07, 0.7), font="./fonts/Yantramanav-Regular.ttf", font_size=30, color="black"),
+        "gen_date": ElementStyling(position=Position(0.636, 0.077), font="./fonts/Yantramanav-Regular.ttf", font_size=22, color="black"),
+        "referral": ElementStyling(position=Position(0.361, 0.853), font="./fonts/Yantramanav-Black.ttf", font_size=30, color="black"),
+        "qr_code": ElementStyling(position=Position(0.815, 0.866), size=83),
+        "draw_datetime": True,
+        "draw_qr_referral": True
+    },
 }
