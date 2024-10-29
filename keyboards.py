@@ -33,7 +33,7 @@ exchange = InlineKeyboardMarkup([
         InlineKeyboardButton("BingX", callback_data="bingx"),
         InlineKeyboardButton("OKX", callback_data="okx"),
     ],
-[
+    [
         InlineKeyboardButton("LBANK", callback_data="lbank"),
     ],
 ])
@@ -252,9 +252,19 @@ okx_setups = InlineKeyboardMarkup([
 
 lbank_setups = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("CAN Main", callback_data="CAN Main")],
+        InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
+        InlineKeyboardButton("CAN Free", callback_data="CAN Free")
+    ],
+    [
+        InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
+        InlineKeyboardButton("Turk Free", callback_data="Turk Free")
+    ],
+    [
+        InlineKeyboardButton("Board Main", callback_data="Board Main"),
+        InlineKeyboardButton("Board Free", callback_data="Board Free")
+    ],
     [
         InlineKeyboardButton("Custom...", callback_data="custom"),
-        InlineKeyboardButton("Random...", callback_data="random"),
+        InlineKeyboardButton("Random...", callback_data="random")
     ],
 ])
