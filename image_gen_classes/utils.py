@@ -19,7 +19,6 @@ def draw_centered_text(text, position, styling_or_color, font, draw_object):
     except AttributeError:
         color = styling_or_color
 
-    print(color)
 
     draw_object.text(position, text, font=font, fill=color)
 
