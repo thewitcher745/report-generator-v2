@@ -65,6 +65,21 @@ styling_dict = {
         "gen_date": ElementStyling(position=Position(0.5, 0.768), font="./fonts/DINNextCYR-Regular.ttf", font_size=30, color="#999999"),
         "draw_datetime": True
     },
+    "binance_5": {
+        "vertical_line_1": ElementStyling(position=Position(0.2328, 0.2885)),
+        "vertical_line_2": ElementStyling(position=Position(0.34, 0.2885)),
+        "symbol": ElementStyling(position=Position(0.5, 0.4085), font="./fonts/IBMPlexSans-SemiBold.ttf", font_size=43, color="white"),
+        "signal_type": ElementStyling(position=Position(0.5, 0.456), font="./fonts/IBMPlexSans-Regular.TTF", font_size=34,
+                                      short_color=(217, 83, 116), long_color=(52, 183, 133)),
+        "leverage": ElementStyling(position=Position(0.2734, 0.287), font="./fonts/BAHNSCHRIFT 1.TTF", font_size=30, color=(255, 255, 255)),
+        "roi": ElementStyling(position=Position(0.5, 0.512), font="./fonts/BinancePlex.otf", font_size=110, color=(46, 189, 136)),
+        "entry": ElementStyling(position=Position(0.29, 0.684), font="./fonts/DIN 2014 Demi.ttf", font_size=36, color="white"),
+        "target": ElementStyling(position=Position(0.7, 0.684), font="./fonts/DIN 2014 Demi.ttf", font_size=36, color="white"),
+        "referral": ElementStyling(position=Position(0.33, 0.946), font="./fonts/DIN Next CYR Medium.ttf", font_size=30, color="white"),
+        "qr_code": ElementStyling(position=Position(0.764, 0.854), size=143),
+        "gen_date": ElementStyling(position=Position(0.5, 0.768), font="./fonts/DINNextCYR-Regular.ttf", font_size=30, color="#999999"),
+        "draw_datetime": True
+    },
     "bybit_1": {
         "symbol": ElementStyling(position=Position(0.045, 0.2), font="./fonts/IBMPlexSans-Bold.ttf", font_size=60, color=(255, 255, 255)),
         "signal_type": ElementStyling(position=Position(0.116, 0.21), font="./fonts/IBMPlexSans-Medium.TTF", font_size=30, margin_x=10, margin_y=12,

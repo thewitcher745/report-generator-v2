@@ -54,5 +54,5 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
 
 
 if mode == "dev":
-    generate_image("lbank_2.png", "APTUSDT Perpetual", "short", "3X", "+227.70%", "9.04747", "8.63534", "okx_1", "787289823", "test.png",
+    generate_image("binance_5.png", "APTUSDT Perpetual", "long", "3X", "+227.70%", "9.04747", "8.63534", "okx_1", "787289823", "test.png",
                    datetime.datetime.now(), "CANPREMIUM")
