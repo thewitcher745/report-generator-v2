@@ -89,6 +89,6 @@ class BitgetReport(Report):
         xy = (datetime_styling.position.x * self.image.size[0], datetime_styling.position.y * self.image.size[1])
         datetime_string = f"{gen_date.year}-{two_char_long(gen_date.month)}-{two_char_long(gen_date.day)} {two_char_long(gen_date.hour)}:{two_char_long(gen_date.minute)}"
         if self.image_id.startswith("bitget_4"):
-            datetime_string = f"{gen_date.year}/{two_char_long(gen_date.month)}/{two_char_long(gen_date.day)} {two_char_long(gen_date.hour)}:{two_char_long(gen_date.minute)} ( UTC-4 )"
+            datetime_string = f"{gen_date.year}/{two_char_long(gen_date.month)}/{two_char_long(gen_date.day)} {two_char_long(gen_date.hour)}:{two_char_long(gen_date.minute)} ( UTC-3 )"
 
         self.draw.text(xy, datetime_string, font=font, fill=datetime_styling.color)

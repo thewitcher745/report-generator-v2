@@ -47,7 +47,7 @@ class BinanceReport(Report):
 
         font = ImageFont.truetype(datetime_styling.font, datetime_styling.font_size)
         xy = (datetime_styling.position.x * self.image.size[0], datetime_styling.position.y * self.image.size[1])
-        datetime_string = f"Shared on {gen_date.year}-{two_char_long(gen_date.month)}-{two_char_long(gen_date.day)} at {two_char_long(gen_date.hour)}:{two_char_long(gen_date.minute)} (UTC-4)"
+        datetime_string = f"Shared on {gen_date.year}-{two_char_long(gen_date.month)}-{two_char_long(gen_date.day)} at {two_char_long(gen_date.hour)}:{two_char_long(gen_date.minute)} (UTC+2)"
         if self.image_id in ["binance_4", "binance_5"]:
             draw_centered_text(datetime_string, xy, datetime_styling, font, self.draw)
 
