@@ -260,7 +260,8 @@ class AutomaticSignalConv:
 
             elif context.user_data["image_id"] == "bybit_5":
                 # Since bybit_5 prints the margin instead of the ROI
-                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...", is_callback_query=True)
+                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...",
+                                             is_callback_query=True)
 
                 return AutomaticSignalConv.MARGIN
 
@@ -289,7 +290,8 @@ class AutomaticSignalConv:
 
             elif context.user_data["image_id"] == "bybit_5":
                 # Since bybit_5 prints the margin instead of the ROI
-                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...", is_callback_query=True)
+                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...",
+                                             is_callback_query=True)
 
                 return AutomaticSignalConv.MARGIN
 
