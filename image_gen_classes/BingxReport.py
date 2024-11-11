@@ -98,6 +98,8 @@ class BingxReport(Report):
     def draw_datetime(self, gen_date: datetime.datetime):
         datetime_styling = self.styling["gen_date"]
 
+        gen_date = gen_date + datetime.timedelta(hours=3)
+
         font = ImageFont.truetype(datetime_styling.font, datetime_styling.font_size)
         xy = (datetime_styling.position.x * self.image.size[0], datetime_styling.position.y * self.image.size[1])
         datetime_string = f"{two_char_long(gen_date.month)}/{two_char_long(gen_date.day)} {two_char_long(gen_date.hour)}:{two_char_long(gen_date.minute)}"
