@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw
 import datetime
 from dotenv import dotenv_values
 
+from image_gen_classes.Bitget5Report import Bitget5Report
 from styling_dict import styling_dict
 from image_gen_classes.BinanceReport import BinanceReport
 from image_gen_classes.BingxReport import BingxReport
@@ -26,6 +27,9 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
 
     if image_id.startswith("bybit"):
         report = BybitReport(image_id, styling, img, draw)
+
+    elif image_id.startswith("bitget_5"):
+        report = Bitget5Report(image_id, styling, img, draw)
 
     elif image_id.startswith("bitget"):
         report = BitgetReport(image_id, styling, img, draw)
@@ -54,5 +58,5 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
 
 
 if mode == "dev":
-    generate_image("okx_1.png", "APTUSDT Perpetual", "long", "3X", "+227.70%", "9.04747", "8.63534", "okx_1", "787289823", "test.png",
-                   datetime.datetime.now(), "CANPREMIUM")
+    generate_image("bitget_5.png", "ALGOUSDT Perpetual", "long", "5X", "+75.14%", "0.3420", "0.3933", "bitget_6", "JUB57CVT", "test",
+                   datetime.datetime.now(), "BGUSER-JUB57CVT")

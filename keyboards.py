@@ -27,6 +27,7 @@ exchange = InlineKeyboardMarkup([
     ],
     [
         InlineKeyboardButton("BitGet", callback_data="bitget"),
+        InlineKeyboardButton("BitGet 5", callback_data="bitget_5"),
         InlineKeyboardButton("MEXC", callback_data="mexc"),
     ],
     [
@@ -71,6 +72,12 @@ image_bitget = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
         InlineKeyboardButton("BitGet 4", callback_data="bitget_4"),
+    ],
+])
+
+image_bitget_5 = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("Bitget 5", callback_data="bitget_5"),
     ],
 ])
 
@@ -132,6 +139,12 @@ qr_bybit = InlineKeyboardMarkup([
     ],
 ])
 
+qr_bitget_5 = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("QR 1", callback_data="bitget_1"),
+    ]
+])
+
 qr_bitget = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("QR 1", callback_data="bitget_1"),
@@ -188,6 +201,20 @@ binance_setups = InlineKeyboardMarkup([
 ])
 
 bybit_setups = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
+        InlineKeyboardButton("CAN Free", callback_data="CAN Free")],
+    [
+        InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
+        InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
+    ],
+    [
+        InlineKeyboardButton("Custom...", callback_data="custom"),
+        InlineKeyboardButton("Random...", callback_data="random"),
+    ],
+])
+
+bitget_5_setups = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
         InlineKeyboardButton("CAN Free", callback_data="CAN Free")],

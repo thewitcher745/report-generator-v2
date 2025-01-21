@@ -52,6 +52,7 @@ def get_pair_precision(pair, exchange):
                     "binance": row[1],
                     "bybit": row[2],
                     "bitget": row[3],
+                    "bitget_5": row[3],
                     "mexc": row[4],
                     "bingx": row[5]
                 }
@@ -232,6 +233,24 @@ saved_setups = {
             "referral": "0x828d......84D7"
         }
     },
+    "bitget_5": {
+        "CAN Main": {
+            "qr": "bitget_6",
+            "referral": "3FRFG738"
+        },
+        "CAN Free": {
+            "qr": "bitget_6",
+            "referral": "G1P2189V"
+        },
+        "Turk Main": {
+            "qr": "bitget_6",
+            "referral": "E1L3247R"
+        },
+        "Turk Free": {
+            "qr": "bitget_6",
+            "referral": "P8A4262M"
+        }
+    },
     "mexc": {
         "Cryptolovers": {
             "qr": "binance_1",
@@ -328,6 +347,10 @@ def random_referral(exchange):
     elif exchange == "bybit":
         char_set = range_char("A", "Z") + range_char("0", "9")
         return ''.join(random.sample(char_set, 6))
+
+    elif exchange == "bitget_5":
+        char_set = range_char("A", "Z") + range_char("0", "9")
+        return ''.join(random.sample(char_set, 8))
 
     elif exchange == "bitget":
         char_set = range_char("A", "Z") + range_char("a", "z") + range_char("0", "9")

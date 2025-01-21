@@ -175,6 +175,9 @@ class AutomaticSignalConv:
         elif exchange == "binance":
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_binance, is_callback_query=True)
+        elif exchange == "bitget_5":
+            await utilities.send_message(context, update, "❓ Please select an image:",
+                                         keyboard=keyboards.image_bitget_5, is_callback_query=True)
         elif exchange == "bitget":
             await utilities.send_message(context, update, "❓ Please select an image:",
                                          keyboard=keyboards.image_bitget, is_callback_query=True)
@@ -233,6 +236,8 @@ class AutomaticSignalConv:
             keyboard = keyboards.qr_bybit
             if exchange == "binance":
                 keyboard = keyboards.qr_binance
+            elif exchange == "bitget_5":
+                keyboard = keyboards.qr_bitget_5
             elif exchange == "bitget":
                 keyboard = keyboards.qr_bitget
             elif exchange == "okx":
@@ -278,7 +283,7 @@ class AutomaticSignalConv:
             context.user_data["qr"] = utilities.saved_setups[exchange][setup]["qr"]
             context.user_data["ref"] = utilities.saved_setups[exchange][setup]["referral"]
 
-            if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5"]:
+            if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5", "bitget_5"]:
                 await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
 
                 media_group = await AutomaticSignalConv.generate_images(context, update)
