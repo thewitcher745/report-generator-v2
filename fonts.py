@@ -14,4 +14,5 @@ for key, value in styling_dict.items():
 # Find the fonts that are in the /fonts folder but not in the styling_dict
 unused_fonts = all_fonts - used_fonts
 
+print(unused_fonts)
 
