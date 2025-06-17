@@ -187,57 +187,57 @@ class RegexPatterns:
 
 
 saved_setups = {
-	'binance': {
-		'Cryptolovers': {'qr': 'binance_1', 'referral': '769234612'},
-		'CAN 1': {'qr': 'binance_2', 'referral': '986438986'},
-		'CAN 2': {'qr': 'binance_6', 'referral': '863426124'},
-		'Mentally': {'qr': 'binance_4', 'referral': '832543367'},
-		'Bbland': {'qr': 'binance_5', 'referral': '689736732'},
-		'Paid': {'qr': 'binance_4', 'referral': '796367841'},
-		'Turk': {'qr': 'binance_3', 'referral': '963756491'},
-	},
-	'bybit': {
-		'CAN Main': {'qr': 'bybit_1', 'referral': '3YML5X'},
-		'CAN Free': {'qr': 'bybit_1', 'referral': '6KXM2L'},
-		'Turk Main': {'qr': 'bybit_1', 'referral': '4RST3K'},
-		'Turk Free': {'qr': 'bybit_1', 'referral': '8TWN9E'},
-	},
-	'bitget': {
-		'CAN Main': {'qr': 'bitget_1', 'referral': '4GLSM689'},
-		'CAN Free': {'qr': 'bitget_2', 'referral': '0x1c80......4cD1'},
-		'Turk Main': {'qr': 'bitget_3', 'referral': '6KMRS436'},
-		'Turk Free': {'qr': 'bitget_4', 'referral': '0x828d......84D7'},
-	},
-	'bitget_5': {
-		'CAN Main': {'qr': 'bitget_6', 'referral': '3FRFG738'},
-		'CAN Free': {'qr': 'bitget_6', 'referral': 'G1P2189V'},
-		'Turk Main': {'qr': 'bitget_6', 'referral': 'E1L3247R'},
-		'Turk Free': {'qr': 'bitget_6', 'referral': 'P8A4262M'},
-	},
-	'mexc': {
-		'Cryptolovers': {'qr': 'binance_1', 'referral': '69r4f'},
-		'CAN 1': {'qr': 'binance_2', 'referral': '34n5e'},
-		'CAN 2': {'qr': 'binance_6', 'referral': '46k7u'},
-		'Mentally': {'qr': 'binance_4', 'referral': '53h6r'},
-		'Bbland': {'qr': 'binance_5', 'referral': '67x8w'},
-		'Paid': {'qr': 'binance_4', 'referral': '79g2q'},
-		'Turk': {'qr': 'binance_3', 'referral': '58r3m'},
-	},
-	'bingx': {
-		'CAN Main': {'qr': 'bitget_1', 'referral': 'NKE6GL'},
-		'CAN Free': {'qr': 'bitget_2', 'referral': 'HRB7WN'},
-		'Turk Main': {'qr': 'bitget_3', 'referral': 'SOV2XR'},
-		'Turk Free': {'qr': 'bitget_4', 'referral': 'WMT6QJ'},
-	},
-	'okx': {'CAN Main': {'qr': 'okx_1', 'referral': '92843725'}},
-	'lbank': {
-		'CAN Main': {'qr': 'lbank_1', 'referral': '3MG8F'},
-		'CAN Free': {'qr': 'lbank_1', 'referral': '5KN7R'},
-		'Turk Main': {'qr': 'lbank_1', 'referral': '9LS6N'},
-		'Turk Free': {'qr': 'lbank_1', 'referral': '7NT9L'},
-		'Board Main': {'qr': 'lbank_1', 'referral': '2SH6L'},
-		'Board Free': {'qr': 'lbank_1', 'referral': '3CL4A'},
-	},
+    "binance": {
+        "Cryptolovers": {"qr": "binance_1", "referral": "769234612"},
+        "CAN 1": {"qr": "binance_2", "referral": "986438986"},
+        "CAN 2": {"qr": "binance_6", "referral": "863426124"},
+        "Mentally": {"qr": "binance_4", "referral": "832543367"},
+        "Bbland": {"qr": "binance_5", "referral": "689736732"},
+        "Paid": {"qr": "binance_4", "referral": "796367841"},
+        "Turk": {"qr": "binance_3", "referral": "39164953"},
+    },
+    "bybit": {
+        "CAN Main": {"qr": "bybit_1", "referral": "3YML5X"},
+        "CAN Free": {"qr": "bybit_1", "referral": "6KXM2L"},
+        "Turk Main": {"qr": "bybit_1", "referral": "4RST3K"},
+        "Turk Free": {"qr": "bybit_1", "referral": "8TWN9E"},
+    },
+    "bitget": {
+        "CAN Main": {"qr": "bitget_1", "referral": "4GLSM689"},
+        "CAN Free": {"qr": "bitget_2", "referral": "0x1c80......4cD1"},
+        "Turk Main": {"qr": "bitget_3", "referral": "6KMRS436"},
+        "Turk Free": {"qr": "bitget_4", "referral": "0x828d......84D7"},
+    },
+    "bitget_5": {
+        "CAN Main": {"qr": "bitget_6", "referral": "3FRFG738"},
+        "CAN Free": {"qr": "bitget_6", "referral": "G1P2189V"},
+        "Turk Main": {"qr": "bitget_6", "referral": "E1L3247R"},
+        "Turk Free": {"qr": "bitget_6", "referral": "P8A4262M"},
+    },
+    "mexc": {
+        "Cryptolovers": {"qr": "binance_1", "referral": "69r4f"},
+        "CAN 1": {"qr": "binance_2", "referral": "34n5e"},
+        "CAN 2": {"qr": "binance_6", "referral": "46k7u"},
+        "Mentally": {"qr": "binance_4", "referral": "53h6r"},
+        "Bbland": {"qr": "binance_5", "referral": "67x8w"},
+        "Paid": {"qr": "binance_4", "referral": "79g2q"},
+        "Turk": {"qr": "binance_3", "referral": "58r3m"},
+    },
+    "bingx": {
+        "CAN Main": {"qr": "bitget_1", "referral": "NKE6GL"},
+        "CAN Free": {"qr": "bitget_2", "referral": "HRB7WN"},
+        "Turk Main": {"qr": "bitget_3", "referral": "SOV2XR"},
+        "Turk Free": {"qr": "bitget_4", "referral": "WMT6QJ"},
+    },
+    "okx": {"CAN Main": {"qr": "okx_1", "referral": "92843725"}},
+    "lbank": {
+        "CAN Main": {"qr": "lbank_1", "referral": "3MG8F"},
+        "CAN Free": {"qr": "lbank_1", "referral": "5KN7R"},
+        "Turk Main": {"qr": "lbank_1", "referral": "9LS6N"},
+        "Turk Free": {"qr": "lbank_1", "referral": "7NT9L"},
+        "Board Main": {"qr": "lbank_1", "referral": "2SH6L"},
+        "Board Free": {"qr": "lbank_1", "referral": "3CL4A"},
+    },
 }
 
 
