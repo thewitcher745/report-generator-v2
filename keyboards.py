@@ -101,11 +101,6 @@ image_bitget_5 = InlineKeyboardMarkup(
 image_mexc = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("MEXC 1", callback_data="mexc_1"),
-            InlineKeyboardButton("MEXC 1 Turk", callback_data="mexc_2"),
-            InlineKeyboardButton("MEXC 1 Turk - Kapat", callback_data="mexc_3"),
-        ],
-        [
             InlineKeyboardButton("MEXC 2", callback_data="mexc_4"),
             InlineKeyboardButton("MEXC 3", callback_data="mexc_5"),
             InlineKeyboardButton("MEXC 4", callback_data="mexc_6"),
@@ -306,19 +301,19 @@ bitget_setups = InlineKeyboardMarkup(
 mexc_setups = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("Cryptolovers", callback_data="Cryptolovers"),
-            InlineKeyboardButton("CAN 1", callback_data="CAN 1"),
+            InlineKeyboardButton("Board Main", callback_data="Board Main"),
+            InlineKeyboardButton("Board Free", callback_data="Board Free"),
         ],
         [
-            InlineKeyboardButton("CAN 2", callback_data="CAN 2"),
-            InlineKeyboardButton("Mentally", callback_data="Mentally"),
+            InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
+            InlineKeyboardButton("CAN Free", callback_data="CAN Free"),
         ],
         [
-            InlineKeyboardButton("Bbland", callback_data="Bbland"),
-            InlineKeyboardButton("Paid", callback_data="Paid"),
+            InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
+            InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
         ],
         [
-            InlineKeyboardButton("Turk", callback_data="Turk"),
+            InlineKeyboardButton("Extra 1", callback_data="Extra 1"),
         ],
         [
             InlineKeyboardButton("Custom...", callback_data="custom"),
