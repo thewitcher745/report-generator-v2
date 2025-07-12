@@ -34,7 +34,7 @@ exchange = InlineKeyboardMarkup(
         ],
         [
             InlineKeyboardButton("BitGet", callback_data="bitget"),
-            # InlineKeyboardButton('BitGet 5', callback_data='bitget_5'),
+            InlineKeyboardButton("BitGet 5", callback_data="bitget_5"),
             InlineKeyboardButton("MEXC", callback_data="mexc"),
         ],
         [
