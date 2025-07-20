@@ -108,6 +108,7 @@ image_mexc = InlineKeyboardMarkup(
         [
             InlineKeyboardButton("MEXC 2", callback_data="mexc_4"),
             InlineKeyboardButton("MEXC 3", callback_data="mexc_5"),
+            InlineKeyboardButton("MEXC 4", callback_data="mexc_6"),
         ],
     ]
 )
