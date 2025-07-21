@@ -1,4 +1,5 @@
 from PIL import ImageFont
+from dotenv import dotenv_values
 
 from image_gen_classes.utils import *
 
@@ -80,12 +81,15 @@ class Report:
 
         qr_image = Image.open(f"./qr/{qr}.png")
         qr_image = qr_image.resize((qr_styling.size, qr_styling.size))
-        self.image.paste(qr_image, xy)
 
-        # For better positioning
-        # Define the coordinates of the rectangle (top-left and bottom-right corners)
-        # top_left = xy
-        # bottom_right = (xy[0] + qr_styling.size, xy[1] + qr_styling.size)
+        if dotenv_values(".env.secret")["MODE"] == "dev":
+            # For better positioning
+            # Define the coordinates of the rectangle (top-left and bottom-right corners)
+            top_left = xy
+            bottom_right = (xy[0] + qr_styling.size, xy[1] + qr_styling.size)
 
-        # Draw the rectangle
-        # self.draw.rectangle([top_left, bottom_right], outline=(255, 0, 0), width=1)
+            # Draw the rectangle
+            self.draw.rectangle([top_left, bottom_right], outline=(255, 0, 0), width=1)
+
+        else:
+            self.image.paste(qr_image, xy)
