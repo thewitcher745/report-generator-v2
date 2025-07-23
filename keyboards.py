@@ -230,19 +230,20 @@ qr_okx = InlineKeyboardMarkup(
 binance_setups = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("Cryptolovers", callback_data="Cryptolovers"),
-            InlineKeyboardButton("CAN 1", callback_data="CAN 1"),
+            InlineKeyboardButton("Board Main", callback_data="Board Main"),
+            InlineKeyboardButton("Board Free", callback_data="Board Free"),
         ],
         [
-            InlineKeyboardButton("CAN 2", callback_data="CAN 2"),
-            InlineKeyboardButton("Mentally", callback_data="Mentally"),
+            InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
+            InlineKeyboardButton("CAN Free", callback_data="CAN Free"),
         ],
         [
-            InlineKeyboardButton("Binance 4", callback_data="Binance 4"),
-            InlineKeyboardButton("Binance 5", callback_data="Binance 5"),
+            InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
+            InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
         ],
         [
-            InlineKeyboardButton("Turk", callback_data="Turk"),
+            InlineKeyboardButton("Extra 1", callback_data="Extra 1"),
+            InlineKeyboardButton("Extra 2", callback_data="Extra 2"),
         ],
         [
             InlineKeyboardButton("Custom...", callback_data="custom"),

@@ -188,13 +188,14 @@ class RegexPatterns:
 
 saved_setups = {
     "binance": {
-        "Cryptolovers": {"qr": "binance_1", "referral": "769234612"},
-        "CAN 1": {"qr": "binance_2", "referral": "986438986"},
-        "CAN 2": {"qr": "binance_6", "referral": "863426124"},
-        "Mentally": {"qr": "binance_4", "referral": "832543367"},
-        "Binance 4": {"qr": "binance_5", "referral": "689736732"},
-        "Binance 5": {"qr": "binance_4", "referral": "796367841"},
-        "Turk": {"qr": "binance_3", "referral": "39164953"},
+        "Board Main": {"qr": "binance_1", "referral": "237419134"},
+        "Board Free": {"qr": "binance_1", "referral": "928356471"},
+        "CAN Main": {"qr": "binance_2", "referral": "986438986"},
+        "Turk Main": {"qr": "binance_3", "referral": "39164953"},
+        "CAN Free": {"qr": "binance_6", "referral": "92435420"},
+        "Turk Free": {"qr": "binance_4", "referral": "891972154"},
+        "Extra 1": {"qr": "binance_7", "referral": "9746251829"},
+        "Extra 2": {"qr": "binance_8", "referral": "8463691712"},
     },
     "bybit": {
         "CAN Main": {"qr": "bybit_1", "referral": "3YML5X"},
