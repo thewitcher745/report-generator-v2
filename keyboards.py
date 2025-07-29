@@ -33,8 +33,7 @@ exchange = InlineKeyboardMarkup(
             InlineKeyboardButton("Binance", callback_data="binance"),
         ],
         [
-            InlineKeyboardButton("BitGet", callback_data="bitget"),
-            InlineKeyboardButton("BitGet 5", callback_data="bitget_5"),
+            InlineKeyboardButton("BitGet", callback_data="bitget_5"),
             InlineKeyboardButton("MEXC", callback_data="mexc"),
         ],
         [
@@ -59,6 +58,11 @@ image_binance = InlineKeyboardMarkup(
         ],
         [
             InlineKeyboardButton("Binance 5", callback_data="binance_5"),
+            InlineKeyboardButton("Binance 6", callback_data="binance_6"),
+        ],
+        [
+            InlineKeyboardButton("Binance 7", callback_data="binance_7"),
+            InlineKeyboardButton("Binance 8", callback_data="binance_8"),
         ],
     ]
 )
@@ -112,10 +116,10 @@ image_bingx = InlineKeyboardMarkup(
     [
         [
             # InlineKeyboardButton("BingX 1", callback_data="bingx_3"),
-            InlineKeyboardButton("BingX 1 - CAN", callback_data="bingx_1"),
+            # InlineKeyboardButton("BingX 1 - CAN", callback_data="bingx_1"),
         ],
         [
-            InlineKeyboardButton("BingX 1 - Ashan", callback_data="bingx_2"),
+            # InlineKeyboardButton("BingX 1 - Ashan", callback_data="bingx_2"),
         ],
         [
             InlineKeyboardButton("BingX 2", callback_data="bingx_5"),

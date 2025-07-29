@@ -188,14 +188,14 @@ class RegexPatterns:
 
 saved_setups = {
     "binance": {
-        "Board Main": {"qr": "binance_1", "referral": "237419134"},
-        "Board Free": {"qr": "binance_1", "referral": "928356471"},
-        "CAN Main": {"qr": "binance_2", "referral": "986438986"},
-        "Turk Main": {"qr": "binance_3", "referral": "39164953"},
-        "CAN Free": {"qr": "binance_6", "referral": "92435420"},
-        "Turk Free": {"qr": "binance_4", "referral": "891972154"},
-        "Extra 1": {"qr": "binance_7", "referral": "9746251829"},
-        "Extra 2": {"qr": "binance_8", "referral": "8463691712"},
+        "Board Main": {"qr": "binance_1", "referral": "237419134", "username": "User-89p2j"},
+        "Board Free": {"qr": "binance_1", "referral": "928356471", "username": "User-89p2j"},
+        "CAN Main": {"qr": "binance_2", "referral": "986438986", "username": "User-33c8d"},
+        "Turk Main": {"qr": "binance_3", "referral": "39164953", "username": "User-27c4m"},
+        "CAN Free": {"qr": "binance_6", "referral": "92435420", "username": "User-28c7w"},
+        "Turk Free": {"qr": "binance_4", "referral": "891972154", "username": "User-64q9n"},
+        "Extra 1": {"qr": "binance_7", "referral": "9746251829", "username": "User-27c4m"},
+        "Extra 2": {"qr": "binance_8", "referral": "8463691712", "username": "User-34o2r"},
     },
     "bybit": {
         "CAN Main": {"qr": "bybit_1", "referral": "3YML5X"},

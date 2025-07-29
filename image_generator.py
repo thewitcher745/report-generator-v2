@@ -15,12 +15,24 @@ from image_gen_classes.LbankReport import LbankReport
 mode = dotenv_values(".env.secret")["MODE"]
 
 
-def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target, qr_code, referral, filename, gen_date: datetime.datetime,
-                   username: str):
+def generate_image(
+    image_name,
+    symbol,
+    signal_type,
+    leverage,
+    roi,
+    entry,
+    target,
+    qr_code,
+    referral,
+    filename,
+    gen_date: datetime.datetime,
+    username: str,
+):
     image_id = image_name.split(".")[0]
 
     styling = styling_dict[image_id]
-    img = Image.open(f'./background_images/{image_name}')
+    img = Image.open(f"./background_images/{image_name}")
     draw = ImageDraw.Draw(img)
 
     report = BinanceReport(image_id, styling, img, draw)
@@ -58,5 +70,17 @@ def generate_image(image_name, symbol, signal_type, leverage, roi, entry, target
 
 
 if mode == "dev":
-    generate_image("bitget_5.png", "ALGOUSDT Perpetual", "long", "5X", "+75.14%", "0.3420", "0.3933", "bitget_6", "JUB57CVT", "test",
-                   datetime.datetime.now(), "BGUSER-JUB57CVT")
+    generate_image(
+        "binance_6.png",
+        "FXSUSDT Perpetual",
+        "short",
+        "12X",
+        "+566.13%",
+        "2.027767",
+        "3.8415",
+        "binance_1",
+        "216051564",
+        "test",
+        datetime.datetime.now(),
+        "User-33b7d",
+    )

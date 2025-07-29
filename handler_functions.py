@@ -11,11 +11,18 @@ from styling_dict import styling_dict
 
 
 async def welcome(update, context):
-    await utilities.send_message(context, update, "🙏 Welcome. Choose an option below:", keyboard=keyboards.welcome)
+    await utilities.send_message(
+        context,
+        update,
+        "🙏 Welcome. Choose an option below:",
+        keyboard=keyboards.welcome,
+    )
 
 
 async def cancel(update, context):
-    await utilities.send_message(context, update, "❌ Operation canceled. Use /start to start over.")
+    await utilities.send_message(
+        context, update, "❌ Operation canceled. Use /start to start over."
+    )
     return ConversationHandler.END
 
 
@@ -25,7 +32,9 @@ class NormalReportConv:
     @staticmethod
     async def start(update, context):
         await update.callback_query.answer()
-        await utilities.send_message(context, update, "❓ Please enter the symbol:", is_callback_query=True)
+        await utilities.send_message(
+            context, update, "❓ Please enter the symbol:", is_callback_query=True
+        )
 
         return NormalReportConv.SYMBOL
 
@@ -33,8 +42,12 @@ class NormalReportConv:
     async def symbol(update, context):
         context.user_data["symbol"] = update.message.text
 
-        await utilities.send_message(context, update, "❓ Now enter the type of the trade (Short/Long):",
-                                     keyboards.signal_type)
+        await utilities.send_message(
+            context,
+            update,
+            "❓ Now enter the type of the trade (Short/Long):",
+            keyboards.signal_type,
+        )
 
         return NormalReportConv.TRADE_TYPE
 
@@ -44,7 +57,9 @@ class NormalReportConv:
         await query.answer()
         context.user_data["trade_type"] = query.data
 
-        await utilities.send_message(context, update, "❓ Now enter the entry price:", is_callback_query=True)
+        await utilities.send_message(
+            context, update, "❓ Now enter the entry price:", is_callback_query=True
+        )
 
         return NormalReportConv.ENTRY_PRICE
 
@@ -60,7 +75,9 @@ class NormalReportConv:
         context.user_data["exit_price"] = update.message.text
 
         await utilities.send_message(context, update, "🎉 Done. Generating image...")
-        await utilities.send_message(context, update, f"{context.user_data['trade_type']}")
+        await utilities.send_message(
+            context, update, f"{context.user_data['trade_type']}"
+        )
 
         return ConversationHandler.END
 
@@ -73,8 +90,13 @@ class AutomaticSignalConv:
         await update.callback_query.answer()
         context.user_data["full_auto_signal"] = False
 
-        await utilities.send_message(context, update, "❓ Please select an exchange:", keyboard=keyboards.exchange,
-                                     is_callback_query=True)
+        await utilities.send_message(
+            context,
+            update,
+            "❓ Please select an exchange:",
+            keyboard=keyboards.exchange,
+            is_callback_query=True,
+        )
 
         return AutomaticSignalConv.EXCHANGE
 
@@ -92,39 +114,57 @@ class AutomaticSignalConv:
         stop = utilities.RegexPatterns.Regular.stop(signal_text)[0]
 
         if not symbol:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find symbol. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find symbol. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not signal_type:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find signal type. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find signal type. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not leverage:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find leverage. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find leverage. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not entry:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find entry target. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find entry target. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not targets:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find targets. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find targets. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not stop:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find stop target. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find stop target. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         context.user_data["symbol"] = symbol
@@ -134,7 +174,7 @@ class AutomaticSignalConv:
         context.user_data["targets"] = targets
         context.user_data["stop"] = stop
 
-        confirmation_message = f'''
+        confirmation_message = f"""
     💰 Symbol: {symbol}
     💰 Type: {signal_type}
     ⬆️ Leverage: {leverage}
@@ -143,9 +183,14 @@ class AutomaticSignalConv:
     🚪 Stop: {stop}
 
     If the information is incorrect, use /cancel to end the process.
-            '''
+            """
         await utilities.send_message(context, update, confirmation_message)
-        await utilities.send_message(context, update, "❓ Please select an exchange:", keyboard=keyboards.exchange)
+        await utilities.send_message(
+            context,
+            update,
+            "❓ Please select an exchange:",
+            keyboard=keyboards.exchange,
+        )
 
         return AutomaticSignalConv.EXCHANGE
 
@@ -156,46 +201,98 @@ class AutomaticSignalConv:
 
         exchange = context.user_data["exchange"]
         symbol = context.user_data["symbol"]
-        stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
+        stripped_symbol = (
+            symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
+        )
         try:
-            symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
+            symbol_precision = utilities.get_pair_precision(
+                stripped_symbol, context.user_data["exchange"]
+            )
 
             if symbol_precision is None:
                 error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
-                await utilities.send_message(context, update, error_message, is_callback_query=True)
+                await utilities.send_message(
+                    context, update, error_message, is_callback_query=True
+                )
         except KeyError:
             error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
-            await utilities.send_message(context, update, error_message, is_callback_query=True)
+            await utilities.send_message(
+                context, update, error_message, is_callback_query=True
+            )
 
-        media_group = [InputMediaPhoto(open(f"./background_images/{exchange}_images.png", 'rb'))]
-        await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=media_group)
+        media_group = [
+            InputMediaPhoto(open(f"./background_images/{exchange}_images.png", "rb"))
+        ]
+        await context.bot.send_media_group(
+            chat_id=update.callback_query.message.chat.id, media=media_group
+        )
         if exchange == "bybit":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_bybit, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_bybit,
+                is_callback_query=True,
+            )
         elif exchange == "binance":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_binance, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_binance,
+                is_callback_query=True,
+            )
         elif exchange == "bitget_5":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_bitget_5, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_bitget_5,
+                is_callback_query=True,
+            )
         elif exchange == "bitget":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_bitget, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_bitget,
+                is_callback_query=True,
+            )
         elif exchange == "mexc":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_mexc, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_mexc,
+                is_callback_query=True,
+            )
 
         elif exchange == "bingx":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_bingx, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_bingx,
+                is_callback_query=True,
+            )
 
         elif exchange == "okx":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_okx, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_okx,
+                is_callback_query=True,
+            )
 
         elif exchange == "lbank":
-            await utilities.send_message(context, update, "❓ Please select an image:",
-                                         keyboard=keyboards.image_lbank, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please select an image:",
+                keyboard=keyboards.image_lbank,
+                is_callback_query=True,
+            )
 
         return AutomaticSignalConv.IMAGE
 
@@ -218,11 +315,22 @@ class AutomaticSignalConv:
                 keyboard = keyboards.okx_setups
 
             setup_message = "❓ Select a saved setup below, press custom to enter your own referral info, or random for a randomized QR/Referral:"
-            await utilities.send_message(context, update, setup_message, keyboard=keyboard, is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                setup_message,
+                keyboard=keyboard,
+                is_callback_query=True,
+            )
 
             return AutomaticSignalConv.SAVED_SETUP
         else:
-            await utilities.send_message(context, update, "❓ Please forward or copy a signal:", is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Please forward or copy a signal:",
+                is_callback_query=True,
+            )
             return AutomaticSignalConv.SIGNAL
 
     @staticmethod
@@ -243,66 +351,125 @@ class AutomaticSignalConv:
             elif exchange == "okx":
                 keyboard = keyboards.qr_okx
 
-            await utilities.send_message(context, update, qr_message, keyboard=keyboard, is_callback_query=True)
+            await utilities.send_message(
+                context, update, qr_message, keyboard=keyboard, is_callback_query=True
+            )
             return AutomaticSignalConv.QR
 
         # If randomized data is requested
         elif update.callback_query.data == "random":
-            context.user_data["ref"] = utilities.random_referral(context.user_data["exchange"])
+            context.user_data["ref"] = utilities.random_referral(
+                context.user_data["exchange"]
+            )
             context.user_data["qr"] = utilities.random_qr(context.user_data["exchange"])
 
             random_setup_message = f"Random setup selected: \nReferral code: {context.user_data['qr']}\n{context.user_data['qr']}"
-            if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5"]:
-                await utilities.send_message(context, update, random_setup_message, is_callback_query=True)
-                await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
+            if context.user_data["image_id"] not in ["bitget_2", "bitget_4", "bybit_5"]:
+                await utilities.send_message(
+                    context, update, random_setup_message, is_callback_query=True
+                )
+                await utilities.send_message(
+                    context,
+                    update,
+                    "🎉 Confirmed! Generating image...",
+                    is_callback_query=True,
+                )
 
                 media_group = await AutomaticSignalConv.generate_images(context, update)
 
                 for media in media_group:
-                    await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
-                await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
-                                             is_callback_query=True)
+                    await context.bot.send_media_group(
+                        chat_id=update.callback_query.message.chat.id, media=[media]
+                    )
+                await utilities.send_message(
+                    context,
+                    update,
+                    "🎉 All done! use /start to generate another image.",
+                    is_callback_query=True,
+                )
 
             elif context.user_data["image_id"] == "bybit_5":
                 # Since bybit_5 prints the margin instead of the ROI
-                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...",
-                                             is_callback_query=True)
+                await utilities.send_message(
+                    context,
+                    update,
+                    "❓ Setup selected. Type a margin as the image needs a margin...",
+                    is_callback_query=True,
+                )
 
                 return AutomaticSignalConv.MARGIN
 
             else:
-                await utilities.send_message(context, update, random_setup_message, is_callback_query=True)
-                await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...",
-                                             is_callback_query=True)
+                await utilities.send_message(
+                    context,
+                    update,
+                    "❓ Setup selected. Type a username as the image needs a username...",
+                    is_callback_query=True,
+                )
 
                 return AutomaticSignalConv.USERNAME
 
         # If a preset setup is selected
         else:
             setup = update.callback_query.data
+            context.user_data["saved_setup"] = setup
             context.user_data["qr"] = utilities.saved_setups[exchange][setup]["qr"]
-            context.user_data["ref"] = utilities.saved_setups[exchange][setup]["referral"]
+            context.user_data["ref"] = utilities.saved_setups[exchange][setup][
+                "referral"
+            ]
+            # If the setup contains a username, add it to user_data
+            if "username" in utilities.saved_setups[exchange][setup].keys():
+                context.user_data["username"] = utilities.saved_setups[exchange][setup][
+                    "username"
+                ]
 
-            if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5", "bitget_5"]:
-                await utilities.send_message(context, update, "🎉 Confirmed! Generating image...", is_callback_query=True)
+            if context.user_data["image_id"] in [
+                "bitget_2",
+                "bitget_4",
+                "bybit_5",
+                "bitget_5",
+                "binance_6",
+                "binance_7",
+                "binance_8",
+            ]:
+                await utilities.send_message(
+                    context,
+                    update,
+                    "🎉 Confirmed! Generating image...",
+                    is_callback_query=True,
+                )
 
                 media_group = await AutomaticSignalConv.generate_images(context, update)
 
                 for media in media_group:
-                    await context.bot.send_media_group(chat_id=update.callback_query.message.chat.id, media=[media])
-                await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.",
-                                             is_callback_query=True)
+                    await context.bot.send_media_group(
+                        chat_id=update.callback_query.message.chat.id, media=[media]
+                    )
+                await utilities.send_message(
+                    context,
+                    update,
+                    "🎉 All done! use /start to generate another image.",
+                    is_callback_query=True,
+                )
 
             elif context.user_data["image_id"] == "bybit_5":
                 # Since bybit_5 prints the margin instead of the ROI
-                await utilities.send_message(context, update, "❓ Setup selected. Type a margin as the image needs a margin...",
-                                             is_callback_query=True)
+                await utilities.send_message(
+                    context,
+                    update,
+                    "❓ Setup selected. Type a margin as the image needs a margin...",
+                    is_callback_query=True,
+                )
 
                 return AutomaticSignalConv.MARGIN
 
             else:
-                await utilities.send_message(context, update, "❓ Setup selected. Type a username as the image needs a username...",
-                                             is_callback_query=True)
+                await utilities.send_message(
+                    context,
+                    update,
+                    "❓ Setup selected. Type a username as the image needs a username...",
+                    is_callback_query=True,
+                )
 
                 return AutomaticSignalConv.USERNAME
 
@@ -310,16 +477,27 @@ class AutomaticSignalConv:
 
     @staticmethod
     async def username(update, context):
-        context.user_data["username"] = update.message.text
+        if context.user_data["image_id"] not in [
+            "binance_6",
+            "binance_7",
+            "binance_8",
+        ]:
+            context.user_data["username"] = update.message.text
 
-        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
+        await utilities.send_message(
+            context, update, "🎉 Confirmed! Generating image..."
+        )
 
         media_group = await AutomaticSignalConv.generate_images(context, update)
 
         for media in media_group:
-            await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
+            await context.bot.send_media_group(
+                chat_id=update.message.chat.id, media=[media]
+            )
 
-        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+        await utilities.send_message(
+            context, update, "🎉 All done! use /start to generate another image."
+        )
 
         return ConversationHandler.END
 
@@ -336,39 +514,57 @@ class AutomaticSignalConv:
         stop = utilities.RegexPatterns.Regular.stop(signal_text)[0]
 
         if not symbol:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find symbol. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find symbol. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not signal_type:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find signal type. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find signal type. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not leverage:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find leverage. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find leverage. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not entry:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find entry target. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find entry target. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not targets:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find targets. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find targets. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         if not stop:
-            await utilities.send_message(context, update,
-                                         "❌ Couldn't find stop target. Check if signal was copied/forwarded " +
-                                         "correctly and send it again or use /cancel to cancel the operation.")
+            await utilities.send_message(
+                context,
+                update,
+                "❌ Couldn't find stop target. Check if signal was copied/forwarded "
+                + "correctly and send it again or use /cancel to cancel the operation.",
+            )
             return AutomaticSignalConv.SIGNAL
 
         context.user_data["symbol"] = symbol
@@ -378,7 +574,7 @@ class AutomaticSignalConv:
         context.user_data["targets"] = targets
         context.user_data["stop"] = stop
 
-        confirmation_message = f'''
+        confirmation_message = f"""
 💰 Symbol: {symbol}
 💰 Type: {signal_type}
 ⬆️ Leverage: {leverage}
@@ -387,7 +583,7 @@ class AutomaticSignalConv:
 🚪 Stop: {stop}
         
 If the information is incorrect, use /cancel to end the process.
-        '''
+        """
         await utilities.send_message(context, update, confirmation_message)
 
         keyboard = keyboards.qr_bybit
@@ -407,7 +603,9 @@ If the information is incorrect, use /cancel to end the process.
     async def qr(update, context):
         await update.callback_query.answer()
         context.user_data["qr"] = update.callback_query.data
-        await utilities.send_message(context, update, "❓ Please type a referral code:", is_callback_query=True)
+        await utilities.send_message(
+            context, update, "❓ Please type a referral code:", is_callback_query=True
+        )
 
         return AutomaticSignalConv.REF
 
@@ -417,25 +615,40 @@ If the information is incorrect, use /cancel to end the process.
 
         # Skip to username for images that need a username
         if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5"]:
-            await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
+            await utilities.send_message(
+                context, update, "🎉 Confirmed! Generating image..."
+            )
 
             media_group = await AutomaticSignalConv.generate_images(context, update)
 
             for media in media_group:
-                await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
+                await context.bot.send_media_group(
+                    chat_id=update.message.chat.id, media=[media]
+                )
 
-            await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+            await utilities.send_message(
+                context, update, "🎉 All done! use /start to generate another image."
+            )
 
             return ConversationHandler.END
 
         elif context.user_data["image_id"] == "bybit_5":
             # Since bybit_5 prints the margin instead of the ROI
-            await utilities.send_message(context, update, "❓ Referral set. Type a margin as the image needs a margin...", is_callback_query=True)
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Referral set. Type a margin as the image needs a margin...",
+                is_callback_query=True,
+            )
 
             return AutomaticSignalConv.MARGIN
 
         else:
-            await utilities.send_message(context, update, "❓ Referral set. Type a username as the image needs a username...")
+            await utilities.send_message(
+                context,
+                update,
+                "❓ Referral set. Type a username as the image needs a username...",
+            )
 
             return AutomaticSignalConv.USERNAME
 
@@ -443,14 +656,20 @@ If the information is incorrect, use /cancel to end the process.
     async def margin(update, context):
         context.user_data["margin"] = update.message.text
 
-        await utilities.send_message(context, update, "🎉 Confirmed! Generating image...")
+        await utilities.send_message(
+            context, update, "🎉 Confirmed! Generating image..."
+        )
 
         media_group = await AutomaticSignalConv.generate_images(context, update)
 
         for media in media_group:
-            await context.bot.send_media_group(chat_id=update.message.chat.id, media=[media])
+            await context.bot.send_media_group(
+                chat_id=update.message.chat.id, media=[media]
+            )
 
-        await utilities.send_message(context, update, "🎉 All done! use /start to generate another image.")
+        await utilities.send_message(
+            context, update, "🎉 All done! use /start to generate another image."
+        )
 
         return ConversationHandler.END
 
@@ -471,28 +690,46 @@ If the information is incorrect, use /cancel to end the process.
         else:
             username = ""
 
-        stripped_symbol = symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
+        stripped_symbol = (
+            symbol.replace(" ", "").replace("Perpetual", "").replace("/", "")
+        )
         try:
-            symbol_precision = utilities.get_pair_precision(stripped_symbol, context.user_data["exchange"])
+            symbol_precision = utilities.get_pair_precision(
+                stripped_symbol, context.user_data["exchange"]
+            )
             if symbol_precision is not None:
                 message = f"The selected coin has a precision of {symbol_precision}"
                 try:
-                    await utilities.send_message(context, update, message, is_callback_query=True)
+                    await utilities.send_message(
+                        context, update, message, is_callback_query=True
+                    )
                 except:
-                    await utilities.send_message(context, update, message, is_callback_query=False)
+                    await utilities.send_message(
+                        context, update, message, is_callback_query=False
+                    )
 
-                entry = "{:.{}f}".format(float(context.user_data["entry"]), symbol_precision)
-                targets = ["{:.{}f}".format(float(target), symbol_precision) for target in
-                           context.user_data["targets"]]
+                entry = "{:.{}f}".format(
+                    float(context.user_data["entry"]), symbol_precision
+                )
+                targets = [
+                    "{:.{}f}".format(float(target), symbol_precision)
+                    for target in context.user_data["targets"]
+                ]
             else:
                 error_message = "❌ The selected coin hasn't been listed. Will use the default signal precision."
                 try:
-                    await utilities.send_message(context, update, error_message, is_callback_query=True)
+                    await utilities.send_message(
+                        context, update, error_message, is_callback_query=True
+                    )
                 except:
-                    await utilities.send_message(context, update, error_message, is_callback_query=False)
+                    await utilities.send_message(
+                        context, update, error_message, is_callback_query=False
+                    )
 
                 entry = str(context.user_data["entry"])
-                targets = [str(float(target)) for target in context.user_data["targets"]]
+                targets = [
+                    str(float(target)) for target in context.user_data["targets"]
+                ]
 
         except KeyError:
             entry = str(context.user_data["entry"])
@@ -507,7 +744,11 @@ If the information is incorrect, use /cancel to end the process.
         if context.user_data["image_id"] == "bybit_5":
             used_money = float(context.user_data["margin"])
 
-        qty = used_money * float(context.user_data["leverage"]) / float(context.user_data["entry"])
+        qty = (
+            used_money
+            * float(context.user_data["leverage"])
+            / float(context.user_data["entry"])
+        )
         for target_id, target in enumerate(targets):
             if signal_type.lower() == "long":
                 loss = float(context.user_data["entry"]) * qty
@@ -523,11 +764,24 @@ If the information is incorrect, use /cancel to end the process.
             if context.user_data["image_id"] == "bybit_5":
                 roi = f"+{str(round(net_profit, 2))}"
 
-            image_generator.generate_image(image_name, symbol, signal_type, f"{leverage}x", roi, utilities.separate_number(entry),
-                                           utilities.separate_number(target), qr, ref,
-                                           f"{image_id}_{target_id}", gen_date=datetime.datetime.now(), username=username)
+            image_generator.generate_image(
+                image_name,
+                symbol,
+                signal_type,
+                f"{leverage}x",
+                roi,
+                utilities.separate_number(entry),
+                utilities.separate_number(target),
+                qr,
+                ref,
+                f"{image_id}_{target_id}",
+                gen_date=datetime.datetime.now(),
+                username=username,
+            )
 
-            media_group.append(InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", 'rb')))
+            media_group.append(
+                InputMediaPhoto(open(f"./images/{image_id}_{target_id}.png", "rb"))
+            )
 
         return media_group
 
