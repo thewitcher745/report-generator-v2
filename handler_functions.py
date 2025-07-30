@@ -780,7 +780,7 @@ If the information is incorrect, use /cancel to end the process.
             roi = net_profit / used_money * 100
             roi = f"+{str(round(roi, 2))}%"
 
-            if context.user_data["image_id"] == "bybit_5":
+            if context.user_data["image_id"] in ["bybit_5", "bitget_2"]:
                 roi = f"+{str(round(net_profit, 2))}"
 
             image_generator.generate_image(
