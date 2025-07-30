@@ -33,7 +33,7 @@ exchange = InlineKeyboardMarkup(
             InlineKeyboardButton("Binance", callback_data="binance"),
         ],
         [
-            InlineKeyboardButton("BitGet", callback_data="bitget_5"),
+            InlineKeyboardButton("BitGet", callback_data="bitget"),
             InlineKeyboardButton("MEXC", callback_data="mexc"),
         ],
         [
@@ -84,20 +84,8 @@ image_bybit = InlineKeyboardMarkup(
 image_bitget = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("BitGet 1", callback_data="bitget_1"),
-            InlineKeyboardButton("BitGet 2", callback_data="bitget_2"),
-        ],
-        [
-            InlineKeyboardButton("BitGet 3", callback_data="bitget_3"),
-            InlineKeyboardButton("BitGet 4", callback_data="bitget_4"),
-        ],
-    ]
-)
-
-image_bitget_5 = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton("Bitget 5", callback_data="bitget_5"),
+            InlineKeyboardButton("Bitget 1", callback_data="bitget_1"),
+            InlineKeyboardButton("Bitget 2", callback_data="bitget_2"),
         ],
     ]
 )
@@ -174,7 +162,7 @@ qr_bybit = InlineKeyboardMarkup(
     ]
 )
 
-qr_bitget_5 = InlineKeyboardMarkup(
+qr_bitget = InlineKeyboardMarkup(
     [
         [
             InlineKeyboardButton("QR 1", callback_data="bitget_1"),
@@ -268,23 +256,6 @@ bybit_setups = InlineKeyboardMarkup(
     ]
 )
 
-bitget_5_setups = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton("CAN Main", callback_data="CAN Main"),
-            InlineKeyboardButton("CAN Free", callback_data="CAN Free"),
-        ],
-        [
-            InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
-            InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
-        ],
-        [
-            InlineKeyboardButton("Custom...", callback_data="custom"),
-            InlineKeyboardButton("Random...", callback_data="random"),
-        ],
-    ]
-)
-
 bitget_setups = InlineKeyboardMarkup(
     [
         [
@@ -294,6 +265,10 @@ bitget_setups = InlineKeyboardMarkup(
         [
             InlineKeyboardButton("Turk Main", callback_data="Turk Main"),
             InlineKeyboardButton("Turk Free", callback_data="Turk Free"),
+        ],
+        [
+            InlineKeyboardButton("Board Main", callback_data="Board Main"),
+            InlineKeyboardButton("Board Free", callback_data="Board Free"),
         ],
         [
             InlineKeyboardButton("Custom...", callback_data="custom"),

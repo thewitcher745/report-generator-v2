@@ -242,14 +242,6 @@ class AutomaticSignalConv:
                 keyboard=keyboards.image_binance,
                 is_callback_query=True,
             )
-        elif exchange == "bitget_5":
-            await utilities.send_message(
-                context,
-                update,
-                "❓ Please select an image:",
-                keyboard=keyboards.image_bitget_5,
-                is_callback_query=True,
-            )
         elif exchange == "bitget":
             await utilities.send_message(
                 context,
@@ -344,8 +336,6 @@ class AutomaticSignalConv:
             keyboard = keyboards.qr_bybit
             if exchange == "binance":
                 keyboard = keyboards.qr_binance
-            elif exchange == "bitget_5":
-                keyboard = keyboards.qr_bitget_5
             elif exchange == "bitget":
                 keyboard = keyboards.qr_bitget
             elif exchange == "okx":
@@ -423,11 +413,33 @@ class AutomaticSignalConv:
                     "username"
                 ]
 
-            if context.user_data["image_id"] in [
+            if context.user_data["image_id"] not in [
                 "bitget_2",
                 "bitget_4",
                 "bybit_5",
-                "bitget_5",
+                "bitget_2",
+            ]:
+                await utilities.send_message(
+                    context,
+                    update,
+                    "🎉 Confirmed! Generating image...",
+                    is_callback_query=True,
+                )
+
+                media_group = await AutomaticSignalConv.generate_images(context, update)
+
+                for media in media_group:
+                    await context.bot.send_media_group(
+                        chat_id=update.callback_query.message.chat.id, media=[media]
+                    )
+                await utilities.send_message(
+                    context,
+                    update,
+                    "🎉 All done! use /start to generate another image.",
+                    is_callback_query=True,
+                )
+
+            elif context.user_data["image_id"] in [
                 "binance_6",
                 "binance_7",
                 "binance_8",
@@ -452,7 +464,7 @@ class AutomaticSignalConv:
                     is_callback_query=True,
                 )
 
-            elif context.user_data["image_id"] == "bybit_5":
+            elif context.user_data["image_id"] in ["bybit_5", "bitget_2"]:
                 # Since bybit_5 prints the margin instead of the ROI
                 await utilities.send_message(
                     context,
@@ -478,6 +490,8 @@ class AutomaticSignalConv:
     @staticmethod
     async def username(update, context):
         if context.user_data["image_id"] not in [
+            "bitget_2",
+            "bitget_4",
             "binance_6",
             "binance_7",
             "binance_8",
@@ -614,7 +628,12 @@ If the information is incorrect, use /cancel to end the process.
         context.user_data["ref"] = update.message.text
 
         # Skip to username for images that need a username
-        if not context.user_data["image_id"] in ["bitget_2", "bitget_4", "bybit_5"]:
+        if context.user_data["image_id"] not in [
+            "bitget_2",
+            "bitget_4",
+            "bybit_5",
+            "bitget_2",
+        ]:
             await utilities.send_message(
                 context, update, "🎉 Confirmed! Generating image..."
             )
@@ -632,8 +651,8 @@ If the information is incorrect, use /cancel to end the process.
 
             return ConversationHandler.END
 
-        elif context.user_data["image_id"] == "bybit_5":
-            # Since bybit_5 prints the margin instead of the ROI
+        elif context.user_data["image_id"] in ["bybit_5", "bitget_2"]:
+            # Since bybit_5 and bitget_2 print the margin instead of the ROI
             await utilities.send_message(
                 context,
                 update,

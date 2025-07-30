@@ -2,11 +2,11 @@ from PIL import Image, ImageDraw
 import datetime
 from dotenv import dotenv_values
 
-from image_gen_classes.Bitget5Report import Bitget5Report
 from styling_dict import styling_dict
 from image_gen_classes.BinanceReport import BinanceReport
 from image_gen_classes.BingxReport import BingxReport
 from image_gen_classes.BitgetReport import BitgetReport
+from image_gen_classes.Bitget2Report import Bitget2Report
 from image_gen_classes.BybitReport import BybitReport
 from image_gen_classes.MexcReport import MexcReport
 from image_gen_classes.OkxReport import OkxReport
@@ -40,8 +40,8 @@ def generate_image(
     if image_id.startswith("bybit"):
         report = BybitReport(image_id, styling, img, draw)
 
-    elif image_id.startswith("bitget_5"):
-        report = Bitget5Report(image_id, styling, img, draw)
+    elif image_id.startswith("bitget_2"):
+        report = Bitget2Report(image_id, styling, img, draw)
 
     elif image_id.startswith("bitget"):
         report = BitgetReport(image_id, styling, img, draw)
@@ -59,7 +59,14 @@ def generate_image(
         report = LbankReport(image_id, styling, img, draw)
 
     report.draw_symbol(symbol)
-    report.draw_details(signal_type, leverage, gen_date, username)
+
+    if image_id.startswith("bitget_2"):
+        report.draw_details(
+            signal_type, leverage, gen_date, username, symbol
+        )
+    else:
+        report.draw_details(signal_type, leverage, gen_date, username)
+
     report.draw_roi(roi)
     report.draw_prices(entry, target)
     report.draw_referral_and_qr(referral, qr_code)
@@ -71,16 +78,16 @@ def generate_image(
 
 if mode == "dev":
     generate_image(
-        "binance_6.png",
-        "FXSUSDT Perpetual",
-        "short",
+        "bitget_2.png",
+        "1000XECUSDT Perpetual",
+        "long",
         "12X",
-        "+566.13%",
-        "2.027767",
-        "3.8415",
-        "binance_1",
-        "216051564",
+        "10.2001",
+        "0.02200",
+        "0.0236",
+        "bitget_2",
+        "T7YB313M",
         "test",
         datetime.datetime.now(),
-        "User-33b7d",
+        "Volkan23",
     )

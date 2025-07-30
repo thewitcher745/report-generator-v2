@@ -67,7 +67,6 @@ def get_pair_precision(pair, exchange):
                     "binance": row[1],
                     "bybit": row[2],
                     "bitget": row[3],
-                    "bitget_5": row[3],
                     "mexc": row[4],
                     "bingx": row[5],
                 }
@@ -188,14 +187,46 @@ class RegexPatterns:
 
 saved_setups = {
     "binance": {
-        "Board Main": {"qr": "binance_1", "referral": "237419134", "username": "User-89p2j"},
-        "Board Free": {"qr": "binance_1", "referral": "928356471", "username": "User-89p2j"},
-        "CAN Main": {"qr": "binance_2", "referral": "986438986", "username": "User-33c8d"},
-        "Turk Main": {"qr": "binance_3", "referral": "39164953", "username": "User-27c4m"},
-        "CAN Free": {"qr": "binance_6", "referral": "92435420", "username": "User-28c7w"},
-        "Turk Free": {"qr": "binance_4", "referral": "891972154", "username": "User-64q9n"},
-        "Extra 1": {"qr": "binance_7", "referral": "9746251829", "username": "User-27c4m"},
-        "Extra 2": {"qr": "binance_8", "referral": "8463691712", "username": "User-34o2r"},
+        "Board Main": {
+            "qr": "binance_1",
+            "referral": "237419134",
+            "username": "User-89p2j",
+        },
+        "Board Free": {
+            "qr": "binance_1",
+            "referral": "928356471",
+            "username": "User-89p2j",
+        },
+        "CAN Main": {
+            "qr": "binance_2",
+            "referral": "986438986",
+            "username": "User-33c8d",
+        },
+        "Turk Main": {
+            "qr": "binance_3",
+            "referral": "39164953",
+            "username": "User-27c4m",
+        },
+        "CAN Free": {
+            "qr": "binance_6",
+            "referral": "92435420",
+            "username": "User-28c7w",
+        },
+        "Turk Free": {
+            "qr": "binance_4",
+            "referral": "891972154",
+            "username": "User-64q9n",
+        },
+        "Extra 1": {
+            "qr": "binance_7",
+            "referral": "9746251829",
+            "username": "User-27c4m",
+        },
+        "Extra 2": {
+            "qr": "binance_8",
+            "referral": "8463691712",
+            "username": "User-34o2r",
+        },
     },
     "bybit": {
         "CAN Main": {"qr": "bybit_1", "referral": "3YML5X"},
@@ -204,16 +235,36 @@ saved_setups = {
         "Turk Free": {"qr": "bybit_1", "referral": "8TWN9E"},
     },
     "bitget": {
-        "CAN Main": {"qr": "bitget_1", "referral": "4GLSM689"},
-        "CAN Free": {"qr": "bitget_2", "referral": "0x1c80......4cD1"},
-        "Turk Main": {"qr": "bitget_3", "referral": "6KMRS436"},
-        "Turk Free": {"qr": "bitget_4", "referral": "0x828d......84D7"},
-    },
-    "bitget_5": {
-        "CAN Main": {"qr": "bitget_6", "referral": "3FRFG738"},
-        "CAN Free": {"qr": "bitget_6", "referral": "G1P2189V"},
-        "Turk Main": {"qr": "bitget_6", "referral": "E1L3247R"},
-        "Turk Free": {"qr": "bitget_6", "referral": "P8A4262M"},
+        "CAN Main": {
+            "qr": "bitget_2",
+            "referral": "1HN38KYX",
+            "username": "BGUSER-1HN38KYX",
+        },
+        "CAN Free": {
+            "qr": "bitget_3",
+            "referral": "1KM84HWR",
+            "username": "BGUSER-1KM84HWR",
+        },
+        "Turk Main": {
+            "qr": "bitget_3",
+            "referral": "1WC67QCZ",
+            "username": "BGUSER-1WC67QCZ",
+        },
+        "Turk Free": {
+            "qr": "bitget_2",
+            "referral": "3VH98ACX",
+            "username": "BGUSER-3VH98ACX",
+        },
+        "Board Main": {
+            "qr": "bitget_1",
+            "referral": "2BI76BMK",
+            "username": "BGUSER-2BI76BMK",
+        },
+        "Board Free": {
+            "qr": "bitget_1",
+            "referral": "8LR12MLD",
+            "username": "BGUSER-8LR12MLD",
+        },
     },
     "mexc": {
         "Board Main": {"qr": "binance_1", "referral": "69r4f"},
@@ -255,10 +306,6 @@ def random_referral(exchange):
     elif exchange == "bybit":
         char_set = range_char("A", "Z") + range_char("0", "9")
         return "".join(random.sample(char_set, 6))
-
-    elif exchange == "bitget_5":
-        char_set = range_char("A", "Z") + range_char("0", "9")
-        return "".join(random.sample(char_set, 8))
 
     elif exchange == "bitget":
         char_set = range_char("A", "Z") + range_char("a", "z") + range_char("0", "9")
