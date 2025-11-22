@@ -38,7 +38,7 @@ exchange = InlineKeyboardMarkup(
         ],
         [
             InlineKeyboardButton("BingX", callback_data="bingx"),
-            InlineKeyboardButton("OKX", callback_data="okx"),
+            # InlineKeyboardButton("OKX", callback_data="okx"),
         ],
         [
             InlineKeyboardButton("LBANK", callback_data="lbank"),
